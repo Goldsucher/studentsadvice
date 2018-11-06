@@ -1,2 +1,1 @@
-# studentsadvice
-Repo for Beuth Master Project Studentadvice
+# Repo für den php Zweig des Projekts
