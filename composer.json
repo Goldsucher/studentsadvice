@@ -1,0 +1,7 @@
+{
+    "require": {
+        "php" : ">= 7.1",
+        "smarty/smarty": "^3.1",
+        "twbs/bootstrap": "4.1.3"
+    }
+}
