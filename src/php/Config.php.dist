@@ -43,14 +43,7 @@ class Config
         $this->config['file.noten.csv'] = 'pseudonoten.csv';
         $this->config['file.units.csv'] = 'pseudounits.csv';
 
-        //smarty
-        $this->config['path.smarty.templates'] = $this->config['path.app']. '/../../templates/';
-        $this->config['path.smarty.cache'] = $this->config['path.app']. '/../../temp/smarty/cache/';
-        $this->config['path.smarty.compile'] = $this->config['path.app']. '/../../temp/smarty/templates_c/';
-
     }
-
-
 
     public function getConfigValue($key) {
         if(isset($this->config[$key])){

@@ -11,3 +11,8 @@ if(!$dbConn)
 {
     exit("Verbindungsfehler: ".mysqli_connect_error());
 }
+
+$smarty = new Smarty();
+$smarty->template_dir = $config->getConfigValue('path.smarty.templates');
+$smarty->compile_dir = $config->getConfigValue('path.smarty.compile');
+$smarty->cache_dir = $config->getConfigValue('path.smarty.cache');
