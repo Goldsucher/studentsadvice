@@ -25,7 +25,7 @@ class ImportHelper
                 if(strstr($this->dbConn->error, 'Duplicate entry')){
                     $errors['duplicates'][] = $this->dbConn->error;
                     continue;
-                }else {
+                } else {
                     $errors[] = $this->dbConn->error;
                     $errors['status'] = false;
                     return $errors;

@@ -30,12 +30,14 @@
     </table>
 
     Anzahl insgesamt belegter Kurse: {$student.noten|@count}
-    <table class="table table-striped table-sm">
+    <table class="table table-sm table-hover">
         <thead class="thead-dark">
         <tr>
             <th scope="col">#</th>
             {foreach from=$student.columns.noten item=col}
-                <th>{$col}</th>
+                {if $col neq "ID"}
+                    <th>{$col}</th>
+                {/if}
             {/foreach}
         </tr>
         </thead>
@@ -44,7 +46,15 @@
             <tr>
                 <th scope="row">{counter}</th>
                 {foreach from=$data key=key item=value}
-                    <td>{$value}</td>
+                    {if $key neq "ID"}
+                        {if $key eq "Titel" || $key eq "Unit"}
+                            <td><a href="{$SCRIPT_NAME}?show_studentDetails2={$data.ID}&course={$data.Unit}">{$value}</a></td>
+                        {elseif $key eq "Semester"}
+                            <td><a href="{$SCRIPT_NAME}?show_studentDetails2={$data.ID}&semester={$data.Semester}">{$value}</a></td>
+                        {else}
+                            <td>{$value}</td>
+                        {/if}
+                    {/if}
                 {/foreach}
             </tr>
         {/foreach}

@@ -1,2 +1,2 @@
 <?php
-require_once('src/php/import/import.php');
+require_once('src/php/import/importTask.php');

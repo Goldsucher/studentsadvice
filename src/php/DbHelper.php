@@ -34,7 +34,7 @@ class dbHelper
         return $result;
     }
 
-    public function getStudentDataWithColumnnames($id){
+    public function getStudentDataWithColumnnames($id, $gradesConditions){
         $student = array();
 
         //hzb-Table
@@ -69,15 +69,30 @@ class dbHelper
 
 
         //noten-table und units-table
-        $stmt = "SELECT noten.Semester, noten.Unit, units.Titel, noten.Note FROM noten INNER JOIN units ON noten.Unit = units.Unit WHERE ID = ".$id. " ORDER BY noten.Semester ASC";
+        $stmt = "SELECT DISTINCT noten.Semester, noten.Unit, units.Titel, noten.Note, noten.ID FROM noten INNER JOIN units ON noten.Unit = units.Unit WHERE ID = ".$id;
+        if(!empty($gradesConditions)){
+           foreach($gradesConditions as $value) {
+               $stmt .= " AND noten.Note != '" .$value. "'";
+           }
+        }
+        $stmt .="ORDER BY noten.Semester DESC";
+        echo $stmt;
         $rs = mysqli_query($this->dbConn, $stmt);
 
         $i = 0;
         while($row = mysqli_fetch_object($rs))
         {
             foreach ($row as $key => $value) {
-                if($key == "Semester"){
+                if($key == "Semester") {
                     $student['noten'][$i][$key] = $this->convertSemester($value);
+                } elseif ($key == "Unit") {
+                    // get number of course reservation
+                    $stmt ="SELECT COUNT(noten.Unit) AS Versuche FROM noten WHERE ID = ".$id." and noten.Unit = ".$value." ORDER BY noten.Semester ASC";
+                    $rs2 = mysqli_query($this->dbConn, $stmt);
+                    foreach (mysqli_fetch_object($rs2) as $key2 => $value2) {
+                        $student['noten'][$i][$key2] = $value2;
+                    }
+                    $student['noten'][$i][$key] = $value;
                 } else {
                     $student['noten'][$i][$key] = $value;
                 }
