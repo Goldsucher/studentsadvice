@@ -13,10 +13,26 @@ if(isset($_GET['show_studentDetails1'])) {
     $smarty->assign('student', $student);
     $smarty->display('show_student_details.tpl');
 
-} elseif(isset($_GET['show_studentDetails2']) and isset($_GET['course'])) {
-    $smarty->display('show_course_details.tpl');
-} elseif(isset($_GET['show_studentDetails2']) and isset($_GET['semester'])) {
-    $smarty->display('show_course_details.tpl');
+} elseif(isset($_GET['show_studentDetails2']) and (isset($_GET['course']) || isset($_GET['semester']))) {
+    $course = "";
+    $semester = "";
+
+    if(isset($_GET['course'])){
+        $course =$_GET['course'];
+    }
+
+    if(isset($_GET['semester'])){
+        $semester =$_GET['semester'];
+    }
+
+    $details = array(
+        'Unit' =>$course,
+        'Semester' => $semester
+        );
+
+    $moredetails = $dbHelper->getStudentMoreDetails($_GET['show_studentDetails2'], $details);
+    $smarty->assign('moredetails', $moredetails);
+    $smarty->display('show_student_moreDetails.tpl');
 }else {
     $hzbData = $dbHelper->getAllHzbWithColumnnames('hzb');
 

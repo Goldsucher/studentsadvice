@@ -35,7 +35,7 @@
         <tr>
             <th scope="col">#</th>
             {foreach from=$student.columns.noten item=col}
-                {if $col neq "ID"}
+                {if $col neq "ID" and $col neq "origSemester"}
                     <th>{$col}</th>
                 {/if}
             {/foreach}
@@ -46,11 +46,11 @@
             <tr>
                 <th scope="row">{counter}</th>
                 {foreach from=$data key=key item=value}
-                    {if $key neq "ID"}
+                    {if $key neq "ID" and $key neq "origSemester"}
                         {if $key eq "Titel" || $key eq "Unit"}
                             <td><a href="{$SCRIPT_NAME}?show_studentDetails2={$data.ID}&course={$data.Unit}">{$value}</a></td>
                         {elseif $key eq "Semester"}
-                            <td><a href="{$SCRIPT_NAME}?show_studentDetails2={$data.ID}&semester={$data.Semester}">{$value}</a></td>
+                            <td><a href="{$SCRIPT_NAME}?show_studentDetails2={$data.ID}&semester={$data.origSemester}">{$value}</a></td>
                         {else}
                             <td>{$value}</td>
                         {/if}
@@ -59,4 +59,5 @@
             </tr>
         {/foreach}
     </table>
+    <a href="{$SCRIPT_NAME}">Zurück</a>
 </div>
