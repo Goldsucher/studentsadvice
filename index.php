@@ -1,17 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Student advice</title>
-    <link rel="stylesheet" href="src/bootstrap-4.0.0/css/bootstrap.css"">
-</head>
-<body>
-<?php
-    require_once('students_advice.php');
-?>
+    <head>
+        <meta charset="UTF-8">
+        <title>Student advice</title>
+        <link rel="stylesheet" href="src/bootstrap-4.0.0/css/bootstrap.css">
+        <link href="src/bootstrap-4.0.0/timeline/timelinev.css" rel="stylesheet">
+        <link href="src/bootstrap-4.0.0/timeline/test_timeline.css" rel="stylesheet">
 
-<script src="src/bootstrap-4.0.0/js/jquery-3.2.1.slim.js"></script>
-<script src="src/bootstrap-4.0.0/js/popper.js"></script>
-<script src="src/bootstrap-4.0.0/js/bootstrap.js"></script>
-</body>
+
+    </head>
+    <body>
+        <?php
+            require_once('students_advice.php');
+        ?>
+
+        <script src="src/bootstrap-4.0.0/js/jquery-3.2.1.js"></script>
+        <script src="src/bootstrap-4.0.0/js/popper.js"></script>
+        <script src="src/bootstrap-4.0.0/timeline/jquery.timelinev.js"></script>
+        <script src="src/js/students_advice.js"></script>
+    </body>
 </html>

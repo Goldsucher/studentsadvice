@@ -17,22 +17,28 @@ if(isset($_GET['show_studentDetails1'])) {
     $course = "";
     $semester = "";
 
-    if(isset($_GET['course'])){
-        $course =$_GET['course'];
+    if (isset($_GET['course'])) {
+        $course = $_GET['course'];
     }
 
-    if(isset($_GET['semester'])){
-        $semester =$_GET['semester'];
+    if (isset($_GET['semester'])) {
+        $semester = $_GET['semester'];
     }
 
     $details = array(
-        'Unit' =>$course,
+        'Unit' => $course,
         'Semester' => $semester
-        );
+    );
 
     $moredetails = $dbHelper->getStudentMoreDetails($_GET['show_studentDetails2'], $details);
+
     $smarty->assign('moredetails', $moredetails);
     $smarty->display('show_student_moreDetails.tpl');
+} elseif(isset($_GET['timeline'])) {
+    $timeline = $dbHelper->getAndPrepareTimelineInformationsForAStudent($_GET['timeline']);
+
+    $smarty->assign('timeline', $timeline);
+    $smarty->display('show_student_timeline.tpl');
 }else {
     $hzbData = $dbHelper->getAllHzbWithColumnnames('hzb');
 

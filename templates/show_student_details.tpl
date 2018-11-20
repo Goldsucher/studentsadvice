@@ -1,4 +1,4 @@
-<div class="container">
+< class="container">
     <table class="table table-striped">
         <thead class="thead-dark">
         <tr>
@@ -30,6 +30,9 @@
     </table>
 
     Anzahl insgesamt belegter Kurse: {$student.noten|@count}
+    <a href="{$SCRIPT_NAME}?timeline={$student.ID}">Timeline</a>
+    <br/>
+    <a href="{$SCRIPT_NAME}">Zurück</a>
     <table class="table table-sm table-hover">
         <thead class="thead-dark">
         <tr>

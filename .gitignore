@@ -1,3 +1,4 @@
 /vendor/*
 /src/php/Config.php
 /temp/*
+/data/.DS_Store
