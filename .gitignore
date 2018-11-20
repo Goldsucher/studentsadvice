@@ -1,4 +1,5 @@
 /vendor/*
 /src/php/Config.php
-/temp/*
+/temp/smarty/cache/*
+/temp/smarty/templates_c/*
 /data/.DS_Store

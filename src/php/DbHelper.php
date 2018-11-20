@@ -49,22 +49,7 @@ class dbHelper
         }
 
         //abschluss-Table
-        $stmt = "SELECT Semester as AbschlussSemester, FachEndNote FROM abschluss WHERE ID = ".$id;
-        $rs = mysqli_query($this->dbConn, $stmt);
-
-
-        $abschluss = (array) mysqli_fetch_object($rs);
-        if(!empty($abschluss)){
-            foreach ($abschluss as $key => $value) {
-                if($key == "AbschlussSemester"){
-                    $student['abschluss'][$key] = $this->convertSemester($value);
-                } else {
-                    $student['abschluss'][$key] = $value;
-                }
-            }
-        } else {
-            $student['abschluss'] = NULL;
-        }
+        $student['abschluss'] = $this->checkFinalExam($id);
 
 
         //noten-table und units-table
@@ -85,6 +70,7 @@ class dbHelper
                     $student['noten'][$i][$key] = $this->convertSemester($value);
                     $student['noten'][$i]['origSemester'] = $value;
                 } elseif ($key == "Unit") {
+                    $student['noten'][$i][$key] = $value;
                     // get number of course reservation
                     $student['noten'][$i]['Versuche'] = $this->getNumberOfAttempts($id, $value);
                 } else {
@@ -158,25 +144,52 @@ class dbHelper
             $semesterData = $this->getGradeInformationensForAStudent($studentId, $semester);
             $semesterData = $this->removeDuplicateCoursesForTimeline($semesterData);
 
-
-            $timeline[$this->convertSemesterOnlyear($semester)] = $semesterData;
-
+            $timeline['data'][$this->convertSemesterOnlyear($semester)] = $semesterData;
+            $timeline['abschluss'] =$this->checkFinalExam($studentId);
         }
 
         return $timeline;
     }
 
+    public function checkFinalExam($studentId) {
+        $student = array();
+
+        $stmt = "SELECT Semester as AbschlussSemester, FachEndNote FROM abschluss WHERE ID = ".$studentId;
+        $rs = mysqli_query($this->dbConn, $stmt);
+
+
+        $abschluss = (array) mysqli_fetch_object($rs);
+        if(!empty($abschluss)){
+            foreach ($abschluss as $key => $value) {
+                if($key == "AbschlussSemester"){
+                    $student[$key] = $this->convertSemester($value);
+                } else {
+                    $student[$key] = $value;
+                }
+            }
+        } else {
+            $student = NULL;
+        }
+
+        return $student;
+    }
+
     public function removeDuplicateCoursesForTimeline($semesterData){
         $tmpData = array();
         $unique = array();
+
+        $expulsion = array('NT', 'belegt', 'o.E.');
+
         foreach($semesterData as $index => $content) {
             if(in_array($content['Titel'], $unique)){
-                    //ToDo richtigen Content löschen
+                $tmpDataIndex = array_search($content['Titel'],$unique);
+                if(in_array($tmpData[$tmpDataIndex]['Note'], $expulsion)){
+                    $tmpData[$tmpDataIndex]= $content;
+                }
             } else {
                 $unique[] = $content['Titel'];
-                $tmpData []= $content;
+                $tmpData[]= $content;
             }
-
         }
 
         return $tmpData;
@@ -206,7 +219,6 @@ class dbHelper
     }
 
     public function getAllActiveSemesters($studentId){
-
         $semesters = array();
 
         $stmt = "SELECT DISTINCT Semester FROM noten WHERE noten.ID = ".$studentId;

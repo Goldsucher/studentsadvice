@@ -1,4 +1,4 @@
-< class="container">
+<div class="container">
     <table class="table table-striped">
         <thead class="thead-dark">
         <tr>
