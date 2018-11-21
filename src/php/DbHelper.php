@@ -59,7 +59,7 @@ class dbHelper
                $stmt .= " AND noten.Note != '" .$value. "'";
            }
         }
-        $stmt .="ORDER BY noten.Semester DESC";
+        $stmt .="ORDER BY noten.Semester";
         $rs = mysqli_query($this->dbConn, $stmt);
 
         $i = 0;
@@ -205,9 +205,7 @@ class dbHelper
         while($row = mysqli_fetch_object($rs)) {
             foreach ($row as $key => $value) {
                if($key == "Unit") {
-                   $attemps = $this->getNumberOfAttemptsPerSemester($studentId, $value, $semester);
-                   $result[$i]["Versuche"] = $attemps;
-                    //$result[$i]["Versuche"] = $this->getNumberOfAttempts($studentId, $value);
+                   $result[$i]["Versuche"] = $this->getNumberOfAttemptsPerSemester($studentId, $value, $semester);
                 } else {
                     $result[$i][$key] = $value;
                 }
