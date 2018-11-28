@@ -30,7 +30,10 @@
     </table>
 
     Anzahl insgesamt belegter Kurse: {$student.noten|@count}
+    <br/>
     <a href="{$SCRIPT_NAME}?timeline={$student.ID}">Timeline</a>
+    <br/>
+    <a href="{$SCRIPT_NAME}?line_chart={$student.ID}">LineChart</a>
     <br/>
     <a href="{$SCRIPT_NAME}">Zurück</a>
     <table class="table table-sm table-hover">
