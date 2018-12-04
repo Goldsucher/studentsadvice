@@ -35,10 +35,25 @@ if(isset($_GET['show_studentDetails1'])) {
     $smarty->assign('moredetails', $moredetails);
     $smarty->display('show_student_moreDetails.tpl');
 } elseif(isset($_GET['timeline'])) {
-    $timeline = $dbHelper->getAndPrepareTimelineInformationsForAStudent($_GET['timeline']);
+    $student = $dbHelper->getAndPrepareTimelineInformationsForAStudent($_GET['timeline']);
 
-    $smarty->assign('timeline', $timeline);
+    $smarty->assign('timeline', $student);
     $smarty->display('show_student_timeline.tpl');
+} elseif(isset($_GET['line_chart'])) {
+    $student = $_GET['line_chart'];
+
+    $smarty->assign('student', $student);
+    $smarty->display('show_student_linechart.tpl');
+
+}elseif(isset($_POST['line_chart'])) {
+    $student = $_POST['line_chart'];
+    $numberOfCourses = array();
+
+    $numberOfCourses['numberOfCoursesTaken'] = $dbHelper->getNumberOfTakenCoursesPerSemester($student);
+    $numberOfCourses['numberOfPassedCourses'] = $dbHelper->getNumberOfPassedCoursesPerSemester($student);
+
+    echo json_encode($numberOfCourses);
+
 }else {
     $hzbData = $dbHelper->getAllHzbWithColumnnames('hzb');
 

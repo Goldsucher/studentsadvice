@@ -59,7 +59,7 @@ class dbHelper
                $stmt .= " AND noten.Note != '" .$value. "'";
            }
         }
-        $stmt .="ORDER BY noten.Semester";
+        $stmt .="ORDER BY noten.Semester DESC";
         $rs = mysqli_query($this->dbConn, $stmt);
 
         $i = 0;
@@ -117,7 +117,7 @@ class dbHelper
                 }
             }
         }
-        $stmt .="ORDER BY noten.Semester DESC";
+        $stmt .="ORDER BY noten.Semester";
         $rs = mysqli_query($this->dbConn, $stmt);
 
         $i = 0;
@@ -205,6 +205,7 @@ class dbHelper
         while($row = mysqli_fetch_object($rs)) {
             foreach ($row as $key => $value) {
                if($key == "Unit") {
+                   $result[$i][$key] = $value;
                    $result[$i]["Versuche"] = $this->getNumberOfAttemptsPerSemester($studentId, $value, $semester);
                 } else {
                     $result[$i][$key] = $value;
@@ -227,6 +228,47 @@ class dbHelper
         }
 
         return $semesters;
+    }
+
+    public function getNumberOfTakenCoursesPerSemester($student) {
+
+        $numberOfTakenCourses = array();
+        $activeSemesters = $this->getAllActiveSemesters($student);
+
+
+        foreach($activeSemesters as $semester) {
+
+            $stmt = "SELECT COUNT(DISTINCT Unit) as count FROM `noten` WHERE `ID` = ".$student." AND `Semester` = ".$semester;
+            $rs = mysqli_query($this->dbConn, $stmt);
+
+            $numberOfTakenCourses['semester'][] = [$this->convertSemester($semester)];
+            $numberOfTakenCourses['numberOfCourses'][]   = mysqli_fetch_object($rs)->count;
+        }
+
+        return $numberOfTakenCourses;
+    }
+
+    public function getNumberOfPassedCoursesPerSemester($student){
+
+        $numberOfPassedCourses = array();
+        $activeSemesters = $this->getAllActiveSemesters($student);
+        $criteria = array("NT","5,0","belegt", "o.E.", "PR", "e.n.b.");
+
+        foreach($activeSemesters as $semester) {
+
+            $stmt = "SELECT COUNT(DISTINCT Unit) as count FROM `noten` WHERE `ID` = ".$student." AND `Semester` = ".$semester;
+            foreach ($criteria as $criterion) {
+                $stmt .= " AND Note != "."'$criterion'";
+            }
+
+            $rs = mysqli_query($this->dbConn, $stmt);
+
+            $numberOfPassedCourses['semester'][] = [$this->convertSemester($semester)];
+            $numberOfPassedCourses['numberOfCourses'][]   = mysqli_fetch_object($rs)->count;
+        }
+
+        return $numberOfPassedCourses;
+
     }
 
     private function convertSemester($semester) {

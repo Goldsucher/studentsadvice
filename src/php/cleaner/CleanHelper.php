@@ -97,36 +97,29 @@ class CleanHelper
         return $students;
     }
 
-    public function removeDoubleGradesFromTable($table) {
+    public function exportAndRemoveDoubleGrades($table, $extraTable){
+        $stmt = "DROP TABLe ".$extraTable;
+        mysqli_query($this->dbConn, $stmt);
 
-        $getDoubleGrades = $this->getDoubleGrades($table);
+        $stmt = "CREATE TABLE " .$extraTable. " SELECT DISTINCT * FROM ".$table;
+        mysqli_query($this->dbConn, $stmt);
 
+        $stmt = "ALTER TABLE ".$table." RENAME temp";
+        mysqli_query($this->dbConn, $stmt);
+
+        $stmt = "ALTER TABLE ".$extraTable." RENAME " .$table;
+        mysqli_query($this->dbConn, $stmt);
+
+        $stmt = "ALTER TABLE temp RENAME " .$extraTable;
+        mysqli_query($this->dbConn, $stmt);
     }
 
-    public function getDoubleGrades($table) {
-
-        //SELECT name, COUNT(*) c FROM table GROUP BY name HAVING c > 1;
-        //SELECT ID, Semester, Note, Unit, COUNT(*) FROM noten GROUP BY ID, Semester, Note, Unit HAVING COUNT(*) > 1
-        //ORDER BY `noten`.`ID`  ASC
-        $stmt = 'SELECT ID, Semester, Note, Unit FROM ' . $table . ' GROUP BY ID, Semester, Note, Unit  HAVING COUNT(*) > 1';
-        $rs = mysqli_query($this->dbConn, $stmt);
-        $i = 0;
-        $grades = array();
-        while($row = mysqli_fetch_object($rs))
-        {
-            foreach ($row as $key => $value) {
-                $grades[$i][$key] = $value;
-            }
-            $i++;
-        }
-
+    public function changeColumnValue($table, $column, $oldValue, $newValue){
+        $stmt = "UPDATE ".$table. " SET " .$column. " = "."'$newValue'". " WHERE " .$column. " = "."'$oldValue'";
+        mysqli_query($this->dbConn, $stmt);
         echo "<pre>";
-            var_dump($stmt, $grades);
+            var_dump($stmt);
         echo "</pre>";
         die();
-    }
-
-    public function getDoubleGradesAndWriteInExtraTable($table) {
-
     }
 }

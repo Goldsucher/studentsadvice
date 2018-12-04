@@ -17,6 +17,7 @@
         <script src="src/bootstrap-4.0.0/js/jquery-3.2.1.js"></script>
         <script src="src/bootstrap-4.0.0/js/popper.js"></script>
         <script src="src/bootstrap-4.0.0/timeline/jquery.timelinev.js"></script>
+        <script src="src/js/Chart.js"></script>
         <script src="src/js/students_advice.js"></script>
     </body>
 </html>

@@ -14,8 +14,7 @@ $cleanHelper->removeNonBachelor();
 $cleanHelper->markStudentsFromOtherUniversity();
 
 //remove double grades from noten-Table
-$cleanHelper->removeDoubleGradesFromTable('noten');
+$cleanHelper->exportAndRemoveDoubleGrades('noten', 'doppelteNoten');
 
-//TODO Change function name
-// get double grades
-$cleanHelper->getDoubleGradesAndWriteInExtraTable("engueltigeKursNoten");
+//change BNF E to 6 in noten-Tablle
+$cleanHelper->changeColumnValue("noten", "BNF", "E", "6");
