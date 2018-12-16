@@ -8,34 +8,61 @@ class ImportHelper
         $this->dbConn = $dbConn;
     }
 
-    public function importDataInTable($filePath, $table){
+    public function writeCSVinTableLinewise($filePath, $table){
 
-        $errors = array();
-        foreach($this->getFileData($filePath) as $item){
-            if($table == "hzb"){
-                if($item['HZBNote'] === "" ){
-                    $item['HZBNote'] = '5';
+        $this->truncateTable($table);
+
+        $columns =array();
+        $fileHandle = fopen($filePath, "r");
+        $firstLine = true;
+        $i=0;
+
+        while (!feof($fileHandle)) {
+            $line = fgets($fileHandle);
+            $tmp = explode(';', $line);
+            if($firstLine){
+                $columns = $tmp;
+                $firstLine = false;
+            } elseif (!$firstLine) {
+                $j = 0;
+                foreach($columns as $col){
+                    $rowContent[trim($col)] = trim($tmp[$j]);
+                    $j++;
+                }
+
+                //do mysql query
+                $query = $this->buildInsertString($rowContent, $table);
+                $result = mysqli_query($this->dbConn, $query);
+
+                if(!$result){
+                    if(strstr($this->dbConn->error, 'Duplicate entry')){
+                        $errors['duplicates'][] = $this->dbConn->error;
+                        echo "<pre>";
+                            var_dump($query,$this->dbConn->error);
+                        echo "</pre>";
+                        continue;
+                    } else {
+                        $errors[] = $this->dbConn->error;
+                        $errors['status'] = false;
+                        $errors['numberOfImports'] = $i;
+                        return $errors;
+                    }
                 }
             }
-
-            $query = $this->buildInsertString($item, $table);
-            $result = mysqli_query($this->dbConn, $query);
-
-            if(!$result){
-                if(strstr($this->dbConn->error, 'Duplicate entry')){
-                    $errors['duplicates'][] = $this->dbConn->error;
-                    continue;
-                } else {
-                    $errors[] = $this->dbConn->error;
-                    $errors['status'] = false;
-                    return $errors;
-                }
-            }
+            $i++;
         }
-        $errors['status'] = true;
+        fclose($fileHandle);
 
-        return $errors;
+        return true;
     }
+
+    public function truncateTable($table){
+
+        $query = ("TRUNCATE TABLE ". $table);
+        mysqli_query($this->dbConn, $query);
+    }
+
+
 
     private function buildInsertString($data, $table){
 
@@ -55,33 +82,4 @@ class ImportHelper
 
         return $insertString;
     }
-
-    public function getFileData($filePath){
-        $fileContent = array();
-        $columns =array();
-
-        $fileHandle = fopen($filePath, "r");
-        $firstLine = true;
-        $i=0;
-        while (!feof($fileHandle)) {
-            if($firstLine){
-                $line = fgets($fileHandle);
-                $columns = explode(';', $line);
-                $firstLine = false;
-            } elseif (!$firstLine) {
-                $line = fgets($fileHandle);
-                $tmp = explode(';', $line);
-                $j = 0;
-                foreach($columns as $col){
-                    $fileContent[$i][trim($col)] = trim($tmp[$j]);
-                    $j++;
-                }
-            }
-            $i++;
-        }
-        fclose($fileHandle);
-
-        return $fileContent;
-    }
-
 }

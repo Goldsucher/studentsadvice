@@ -16,11 +16,8 @@ class CleanHelper
 
     public function removeNonBachelor(){
 
-        $allNonBachelorIDAbschluss = $this->getAllNonBacholorFromTable('abschluss', 'hzb');
-        $allNonBachelorIDNoten = $this->getAllNonBacholorFromTable('noten', 'hzb');
-
-        $this->deleteAllIdsFromTable($allNonBachelorIDAbschluss, "abschluss");
-        $this->deleteAllIdsFromTable($allNonBachelorIDNoten, "noten");
+        $this->getAndDeleteAllNonBacholorFromTable('abschluss', 'hzb');
+        $this->getAndDeleteAllNonBacholorFromTable('noten', 'hzb');
     }
 
     public function deleteAllIdsFromTable($ids, $table) {
@@ -42,28 +39,23 @@ class CleanHelper
 
     }
 
-    public function getAllNonBacholorFromTable($table, $referenzTable){
-        $stmt = "SELECT ".$table.".ID FROM ".$table." LEFT JOIN hzb ON ".$referenzTable.".ID = ".$table.".ID WHERE ".$referenzTable.".ID IS NULL";
+    public function getAndDeleteAllNonBacholorFromTable($table, $referenzTable){
+        $stmt = "SELECT DISTINCT ".$table.".ID FROM ".$table." LEFT JOIN hzb ON ".$referenzTable.".ID = ".$table.".ID WHERE ".$referenzTable.".ID IS NULL";
         $rs = mysqli_query($this->dbConn, $stmt);
 
-        $allNonBachelor = array();
-        $i = 0;
         while($row = mysqli_fetch_object($rs))
         {
-            foreach ($row as $value) {
-                $allNonBachelor[$i] = $value;
-            }
-            $i++;
-        }
 
-        return $allNonBachelor;
+            foreach ($row as $id) {
+                $this->deleteIdfromTable($id, $table);
+            }
+        }
     }
 
     public function markStudentsFromOtherUniversity() {
 
         $allChangingStudentIds = $this->getChangingStudentsIds();
         $this->updateChangingStudentsByIds($allChangingStudentIds);
-
     }
 
     public function updateChangingStudentsByIds($ids){
@@ -98,6 +90,7 @@ class CleanHelper
     }
 
     public function exportAndRemoveDoubleGrades($table, $extraTable){
+
         $stmt = "DROP TABLe ".$extraTable;
         mysqli_query($this->dbConn, $stmt);
 
@@ -115,11 +108,99 @@ class CleanHelper
     }
 
     public function changeColumnValue($table, $column, $oldValue, $newValue){
+
         $stmt = "UPDATE ".$table. " SET " .$column. " = "."'$newValue'". " WHERE " .$column. " = "."'$oldValue'";
         mysqli_query($this->dbConn, $stmt);
-        echo "<pre>";
-            var_dump($stmt);
-        echo "</pre>";
-        die();
+    }
+
+    public function getAllStudentsWithoutGraduation(){
+
+        $stmt = "SELECT DISTINCT(hzb.ID) FROM hzb Left JOIN abschluss ON hzb.ID = abschluss.ID WHERE abschluss.ID IS NULL";
+        $rs = mysqli_query($this->dbConn, $stmt);
+
+        if(!$rs) {
+            echo "<pre>";
+                var_dump($this->dbConn->error);
+            echo "</pre>";
+            die();
+
+        } else {
+            $i = 0;
+            $withoutGraduations = array();
+            while($row = mysqli_fetch_object($rs))
+            {
+
+                foreach ($row as $key => $value) {
+                    $withoutGraduations[$i][$key] = $value;
+                }
+                $i++;
+            }
+        }
+
+
+
+
+        return $withoutGraduations;
+    }
+
+    public function getAbortSemester(){
+
+        $stmt= "SELECT MAX(semester) FROM hzb";
+        $rs = mysqli_query($this->dbConn, $stmt);
+
+
+        $result = null;
+        while($row = mysqli_fetch_object($rs))
+        {
+
+            foreach ($row as $value) {
+                $result =  $value-2;
+            }
+        }
+
+        return $result;
+    }
+
+    public function getDropouts($students, $abortSemester){
+
+        $i=0;
+        $dropouts = array();
+        foreach($students as $student) {
+            $stmt = "SELECT MAX(Semester) as lastActiveSemester FROM noten WHERE ID=" . $student['ID'];
+            $rs = mysqli_query($this->dbConn, $stmt);
+
+            while ($row = mysqli_fetch_object($rs)) {
+                foreach ($row as $key => $lastActiveSemester) {
+                    if ((int)$lastActiveSemester <= $abortSemester) {
+
+                        $dropouts[$i] = $student;
+                        $dropouts[$i][$key] = $lastActiveSemester;
+                        $dropouts[$i]['abortSemester'] = $abortSemester;
+                    }
+
+                }
+            }
+            $i++;
+        }
+
+
+        return $dropouts;
+    }
+
+    public function markDropouts($allDropouts){
+        foreach($allDropouts as $dropout){
+            $stmt = "UPDATE hzb SET abbruch = 1 WHERE ID =" .$dropout['ID'];
+            mysqli_query($this->dbConn, $stmt);
+        }
+    }
+
+
+
+    public function markAllCollegeDropout() {
+
+        $studentsWithoutGraduation = $this->getAllStudentsWithoutGraduation();
+        $abortSemester = $this->getAbortSemester();
+        $allDropouts = $this->getDropouts($studentsWithoutGraduation, $abortSemester);
+        $this->markDropouts($allDropouts);
     }
 }

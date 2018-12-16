@@ -20,28 +20,24 @@ class Config
         $this->config['import.files.dir'] = $this->config['path.app']. '/../../data/original/';
         $this->config['import.file.type'] = '.csv';
         $this->config['import.files'] = array(
-            'hzb' => array(
+            /*'hzb' => array(
                 'file' => 'pseudohzb',
                 'table' => 'hzb'
             ),
             'abschluss' => array(
                 'file' => 'pseudoabschluss',
                 'table' => 'abschluss'
-            ),
+            ),*/
             'noten' => array(
-                'file' => 'pseudonoten',
+                'file' => 'pseudonoten_sorted',
                 'table' => 'noten'
-            ),
+            )/*,
             'units' => array(
                 'file' => 'units',
                 'table' => 'units'
-            )
+            )*/
 
         );
-        $this->config['file.abschluss.csv'] = 'pseudoabschluss.csv';
-        $this->config['files.csv'] = 'pseudohzb.csv';
-        $this->config['file.noten.csv'] = 'pseudonoten.csv';
-        $this->config['file.units.csv'] = 'pseudounits.csv';
 
         //smarty
         $this->config['path.smarty.templates'] = $this->config['path.app']. '/../../templates/';
