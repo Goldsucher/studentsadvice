@@ -11,7 +11,7 @@ class Config
         $this->config['db.mysql.host'] = '127.0.0.1';
         $this->config['db.mysql.name'] = 'uni_students_advice';
         $this->config['db.mysql.user'] = 'user';
-        $this->config['db.mysql.pass'] = 'user123';
+        $this->config['db.mysql.pass'] = '$tud3nT';
 
         // paths
         $this->config['path.app'] = __DIR__;

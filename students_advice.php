@@ -2,6 +2,9 @@
 require_once('src/php/setup.inc.php');
 require_once('src/php/DbHelper.php');
 
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 $dbHelper = new dbHelper($dbConn);
 
 $gradesConditions = array('NT', 'belegt', '5,0', 'o.E.');
