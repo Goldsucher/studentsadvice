@@ -286,4 +286,44 @@ class dbHelper
             return floor($semester/2) . "/" . ceil($semester/2)." (WS)";
         }
     }
+
+    public function getGradeInformations(){
+        $stmt = 'SELECT DISTINCT(Plansemester) FROM `units_extension` WHERE 1 ORDER BY `units_extension`.`Plansemester` ASC';
+        $rs = mysqli_query($this->dbConn, $stmt);
+
+        $sems = array();
+        $grades = array();
+        if (!$rs) {
+            var_dump($this->dbConn->error);
+            die();
+        } else {
+            while ($semesters = mysqli_fetch_object($rs)) {
+                foreach ($semesters as $semester) {
+                       $sems[] = $semester;
+                }
+            }
+        }
+
+        foreach ($sems as $sem) {
+            $stmt2 = null;
+            $stmt2 = "SELECT units_extension.*, units.Unit_id, units.Titel FROM units_extension JOIN units ON units.Unit_ID = units_extension.Unit_id WHERE units_extension.Durchschnittsnote != '0.00' AND Plansemester = '".$sem."'";
+            $rs2 = mysqli_query($this->dbConn, $stmt2);
+
+            if (!$rs2) {
+                var_dump($this->dbConn->error);
+                die();
+
+            } else {
+                $i = 0;
+                while ($data = mysqli_fetch_object($rs2)) {
+                    foreach ($data as $key  => $value) {
+                        $grades[$sem][$i][$key] = $value;
+                    }
+                    $i++;
+                }
+            }
+        }
+
+        return $grades;
+    }
 }

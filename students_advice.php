@@ -54,6 +54,13 @@ if(isset($_GET['show_studentDetails1'])) {
 
     echo json_encode($numberOfCourses);
 
+
+} elseif(isset($_GET['avg_grades'])) {
+
+    $gradesInformations = $dbHelper->getGradeInformations();
+
+    $smarty->assign('grades', $gradesInformations);
+    $smarty->display('show_grades_average.tpl');
 }else {
     $hzbData = $dbHelper->getAllHzbWithColumnnames('hzb');
 
