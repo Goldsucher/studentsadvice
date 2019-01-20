@@ -211,7 +211,7 @@ class CleanHelper
 
     public function identfyCommonCore($filePath)
     {
-        $fileHandle = fopen($filePath, "r");
+        $fileHandle = fopen(__DIR__."/".$filePath, "r");
 
         while (!feof($fileHandle)) {
             $id = trim(fgets($fileHandle));
@@ -354,7 +354,7 @@ class CleanHelper
     }
 
     public function setScheduledSemester($file){
-        $fileHandle = fopen($file, "r");
+        $fileHandle = fopen(__DIR__."/".$file, "r");
 
         while (!feof($fileHandle)) {
             $data = explode(';',trim(fgets($fileHandle)));

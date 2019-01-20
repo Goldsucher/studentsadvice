@@ -9,8 +9,8 @@ if (php_sapi_name() == "cli") {
     $phpEOL = '<br/>';
 }
 
-$idsWithElective = 'cleaner/ids_elective.txt'; // path
-$scheduledSemester = 'cleaner/scheduled_semester.csv'; // path
+$idsWithElective = 'ids_elective.txt'; // path
+$scheduledSemester = 'scheduled_semester.csv'; // path
 
 $cleanHelper = new CleanHelper($dbConn);
 echo "Cleaning Datasets started...".$phpEOL;
