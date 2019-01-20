@@ -1,7 +1,7 @@
 <?php
 
 require_once(__DIR__.'/../setup.inc.php');
-require_once(__DIR__.'/../import/importHelper.php');
+require_once(__DIR__.'/ImportHelper.php');
 require_once('ImportConfig.php');
 
 $importHelper = new ImportHelper($dbConn);

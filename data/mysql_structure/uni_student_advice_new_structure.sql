@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Erstellungszeit: 13. Jan 2019 um 13:46
+-- Erstellungszeit: 17. Jan 2019 um 08:49
 -- Server-Version: 8.0.12
 -- PHP-Version: 7.1.19
 
@@ -19,10 +19,10 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Datenbank: `uni_student_advice`
+-- Datenbank: `uni_students_advice`
 --
-CREATE DATABASE IF NOT EXISTS `uni_student_advice` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-USE `uni_student_advice`;
+CREATE DATABASE IF NOT EXISTS `uni_students_advice` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `uni_students_advice`;
 
 -- --------------------------------------------------------
 
@@ -40,6 +40,21 @@ CREATE TABLE `abschluss` (
 -- --------------------------------------------------------
 
 --
+-- Tabellenstruktur für Tabelle `doppelteNoten`
+--
+
+DROP TABLE IF EXISTS `doppelteNoten`;
+CREATE TABLE `doppelteNoten` (
+  `Student_id` int(11) NOT NULL,
+  `Unit_id` int(11) NOT NULL,
+  `Semester` int(11) NOT NULL,
+  `Note` varchar(11) NOT NULL,
+  `BNF` varchar(5) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Tabellenstruktur für Tabelle `hzb`
 --
 
@@ -47,8 +62,8 @@ DROP TABLE IF EXISTS `hzb`;
 CREATE TABLE `hzb` (
   `Student_id` int(11) NOT NULL,
   `Semester` int(11) DEFAULT NULL,
-  `HZBNote` int(11) DEFAULT NULL,
-  `Art` varchar(100) NOT NULL
+  `HZBNote` varchar(11) DEFAULT NULL,
+  `Art` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -60,8 +75,10 @@ CREATE TABLE `hzb` (
 DROP TABLE IF EXISTS `hzb_extension`;
 CREATE TABLE `hzb_extension` (
   `Student_id` int(11) NOT NULL,
-  `wechsel` tinyint(1) DEFAULT NULL,
-  `abbruch` tinyint(1) DEFAULT NULL
+  `Wechsel` tinyint(1) DEFAULT NULL,
+  `Abbruch` tinyint(1) DEFAULT NULL,
+  `Durchschnittsnote` decimal(3,2) DEFAULT NULL,
+  `EndNote` decimal(3,2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -72,11 +89,10 @@ CREATE TABLE `hzb_extension` (
 
 DROP TABLE IF EXISTS `noten`;
 CREATE TABLE `noten` (
-  `id` int(11) NOT NULL,
   `Student_id` int(11) NOT NULL,
   `Unit_id` int(11) NOT NULL,
   `Semester` int(11) NOT NULL,
-  `Note` int(11) NOT NULL,
+  `Note` varchar(11) NOT NULL,
   `BNF` varchar(5) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -95,23 +111,23 @@ CREATE TABLE `units` (
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `units_equivalenz`
+-- Tabellenstruktur für Tabelle `units_equivalence`
 --
 
-DROP TABLE IF EXISTS `units_equivalenz`;
-CREATE TABLE `units_equivalenz` (
+DROP TABLE IF EXISTS `units_equivalence`;
+CREATE TABLE `units_equivalence` (
   `Unit_id` int(11) NOT NULL,
-  `Unit_id_2005` int(11) DEFAULT NULL,
+  `Unit_id_2005` varchar(11) DEFAULT NULL,
   `Titel_2005` varchar(255) DEFAULT NULL,
   `Type_2005` varchar(10) DEFAULT NULL,
-  `Unit_id_2007` int(11) DEFAULT NULL,
-  `Titel2012` varchar(255) DEFAULT NULL,
+  `Unit_id_2012` varchar(11) DEFAULT NULL,
+  `Titel_2012` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `Type_2012` varchar(10) DEFAULT NULL,
-  `Unit_id_2012` int(11) DEFAULT NULL,
+  `Unit_id_2017` varchar(11) DEFAULT NULL,
   `Titel_2017` varchar(255) DEFAULT NULL,
   `Type_2017` varchar(10) DEFAULT NULL,
   `Unit_id_final` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 -- --------------------------------------------------------
 
@@ -123,7 +139,9 @@ DROP TABLE IF EXISTS `units_extension`;
 CREATE TABLE `units_extension` (
   `Unit_id` int(11) NOT NULL,
   `Wahlpflicht` tinyint(1) DEFAULT NULL,
-  `Durchschnittsnote` float DEFAULT NULL
+  `Plansemester` varchar(5) DEFAULT NULL,
+  `Durchschnittsnote` decimal(3,2) DEFAULT NULL,
+  `Durchschnittsnote_5` decimal(3,2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -149,23 +167,15 @@ ALTER TABLE `hzb_extension`
   ADD PRIMARY KEY (`Student_id`);
 
 --
--- Indizes für die Tabelle `noten`
---
-ALTER TABLE `noten`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `noten_ibfk_1` (`Student_id`),
-  ADD KEY `Unit_id` (`Unit_id`);
-
---
 -- Indizes für die Tabelle `units`
 --
 ALTER TABLE `units`
   ADD PRIMARY KEY (`Unit_id`);
 
 --
--- Indizes für die Tabelle `units_equivalenz`
+-- Indizes für die Tabelle `units_equivalence`
 --
-ALTER TABLE `units_equivalenz`
+ALTER TABLE `units_equivalence`
   ADD PRIMARY KEY (`Unit_id`);
 
 --
@@ -175,16 +185,6 @@ ALTER TABLE `units_extension`
   ADD PRIMARY KEY (`Unit_id`);
 
 --
--- AUTO_INCREMENT für exportierte Tabellen
---
-
---
--- AUTO_INCREMENT für Tabelle `noten`
---
-ALTER TABLE `noten`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
 -- Constraints der exportierten Tabellen
 --
 
@@ -192,20 +192,13 @@ ALTER TABLE `noten`
 -- Constraints der Tabelle `hzb_extension`
 --
 ALTER TABLE `hzb_extension`
-  ADD CONSTRAINT `hzb_extension_ibfk_1` FOREIGN KEY (`Student_id`) REFERENCES `hzb` (`Student_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `hzb_extension_ibfk_1` FOREIGN KEY (`Student_id`) REFERENCES `hzb` (`student_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints der Tabelle `noten`
+-- Constraints der Tabelle `units_equivalence`
 --
-ALTER TABLE `noten`
-  ADD CONSTRAINT `noten_ibfk_1` FOREIGN KEY (`Student_id`) REFERENCES `hzb` (`student_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `noten_ibfk_2` FOREIGN KEY (`Unit_id`) REFERENCES `units` (`unit_id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints der Tabelle `units_equivalenz`
---
-ALTER TABLE `units_equivalenz`
-  ADD CONSTRAINT `units_equivalenz_ibfk_1` FOREIGN KEY (`Unit_id`) REFERENCES `units` (`Unit_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `units_equivalence`
+  ADD CONSTRAINT `units_equivalence_ibfk_1` FOREIGN KEY (`Unit_id`) REFERENCES `units` (`Unit_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints der Tabelle `units_extension`

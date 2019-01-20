@@ -9,87 +9,6 @@ class dbHelper
         $this->dbConn = $dbConn;
     }
 
-    public function getAllHzbWithColumnnames($table) {
-        $result = array();
-
-        $stmt = "SELECT * FROM ".$table . " ORDER BY ID ASC";
-        $rs = mysqli_query($this->dbConn, $stmt);
-
-        $i = 0;
-        while($row = mysqli_fetch_object($rs))
-        {
-            foreach ($row as $key => $value) {
-                if($key == "Semester"){
-                    $result['data'][$i][$key] = $this->convertSemester($value);
-                } else {
-                    $result['data'][$i][$key] = $value;
-                }
-            }
-
-            $i++;
-        }
-        $result['columns'] = array_keys($result['data'][0]);
-
-        return $result;
-    }
-
-    public function getStudentDataWithColumnnames($id, $gradesConditions){
-        $student = array('ID' => $id);
-
-        //hzb-Table
-        $stmt = "SELECT ID, HZBNote, Art, Semester as BeginSemester FROM hzb WHERE ID = ".$id;
-        $rs = mysqli_query($this->dbConn, $stmt);
-
-        foreach ((array) mysqli_fetch_object($rs) as $key => $value) {
-            if($key == "BeginSemester"){
-                $student['hzb'][$key] = $this->convertSemester($value);
-            } else {
-                $student['hzb'][$key] = $value;
-            }
-        }
-
-        //abschluss-Table
-        $student['abschluss'] = $this->checkFinalExam($id);
-
-
-        //noten-table und units-table
-        $stmt = "SELECT DISTINCT noten.Semester, noten.Unit, units.Titel, noten.Note, noten.ID FROM noten INNER JOIN units ON noten.Unit = units.Unit WHERE ID = ".$id;
-        if(!empty($gradesConditions)){
-           foreach($gradesConditions as $value) {
-               $stmt .= " AND noten.Note != '" .$value. "'";
-           }
-        }
-        $stmt .="ORDER BY noten.Semester DESC";
-        $rs = mysqli_query($this->dbConn, $stmt);
-
-        $i = 0;
-        while($row = mysqli_fetch_object($rs))
-        {
-            foreach ($row as $key => $value) {
-                if($key == "Semester") {
-                    $student['noten'][$i][$key] = $this->convertSemester($value);
-                    $student['noten'][$i]['origSemester'] = $value;
-                } elseif ($key == "Unit") {
-                    $student['noten'][$i][$key] = $value;
-                    // get number of course reservation
-                    $student['noten'][$i]['Versuche'] = $this->getNumberOfAttempts($id, $value);
-                } else {
-                    $student['noten'][$i][$key] = $value;
-                }
-
-            }
-            $i++;
-        }
-
-        $student['columns']['hzb'] = array_keys($student['hzb']);
-        if(!empty($student['abschluss'])) {
-            $student['columns']['abschluss'] = array_keys($student['abschluss']);
-        }
-        $student['columns']['noten'] = array_keys($student['noten'][0]);
-
-        return $student;
-    }
-
     public function getNumberOfAttempts($studentId, $unit){
         $stmt ="SELECT COUNT(noten.Unit) AS Versuche FROM noten WHERE ID = ".$studentId." AND noten.Unit = ".$unit." ORDER BY noten.Semester ASC";
         $rs = mysqli_query($this->dbConn, $stmt);
@@ -106,36 +25,6 @@ class dbHelper
 
     }
 
-    public function getStudentMoreDetails($studentId, $details){
-        $result = array();
-
-        $stmt = "SELECT DISTINCT noten.Semester, noten.Unit, units.Titel, noten.Note, noten.ID FROM noten INNER JOIN units ON noten.Unit = units.Unit WHERE ID = ".$studentId;
-        if(!empty($details)){
-            foreach($details as $key => $detail) {
-                if($detail) {
-                    $stmt .= " AND noten.".$key." = '" .$detail. "'";
-                }
-            }
-        }
-        $stmt .="ORDER BY noten.Semester";
-        $rs = mysqli_query($this->dbConn, $stmt);
-
-        $i = 0;
-        while($row = mysqli_fetch_object($rs)) {
-            foreach ($row as $key => $value) {
-                if($key == "Semester") {
-                    $result['data'][$i][$key] = $this->convertSemester($value);
-                } else {
-                    $result['data'][$i][$key] = $value;
-                }
-            }
-            $i++;
-        }
-        $result['columns'] = array_keys($result['data'][0]);
-
-        return $result;
-    }
-
     public function getAndPrepareTimelineInformationsForAStudent($studentId){
         $timeline = array();
         $semesters = $this->getAllActiveSemesters($studentId);
@@ -149,29 +38,6 @@ class dbHelper
         }
 
         return $timeline;
-    }
-
-    public function checkFinalExam($studentId) {
-        $student = array();
-
-        $stmt = "SELECT Semester as AbschlussSemester, FachEndNote FROM abschluss WHERE ID = ".$studentId;
-        $rs = mysqli_query($this->dbConn, $stmt);
-
-
-        $abschluss = (array) mysqli_fetch_object($rs);
-        if(!empty($abschluss)){
-            foreach ($abschluss as $key => $value) {
-                if($key == "AbschlussSemester"){
-                    $student[$key] = $this->convertSemester($value);
-                } else {
-                    $student[$key] = $value;
-                }
-            }
-        } else {
-            $student = NULL;
-        }
-
-        return $student;
     }
 
     public function removeDuplicateCoursesForTimeline($semesterData){
@@ -325,5 +191,103 @@ class dbHelper
         }
 
         return $grades;
+    }
+
+    // API
+    public function getSelectAllFromTable($table, $orderBy = null, $orderMode = null ) {
+        $stmt = 'SELECT * FROM '.$table;
+        if(!empty($orderBy)) {
+            $stmt.= ' ORDER BY '.$orderBy;
+
+            if(!empty($orderMode)) {
+                $stmt .= ' '.$orderMode;
+            }
+        }
+        $rs = mysqli_query($this->dbConn, $stmt);
+
+        $result = array();
+
+        if (!$rs) {
+            $result['status'] = false;
+            $result['content'] = $this->dbConn->error;
+        } else {
+            $i = 0;
+            $result['status'] = true;
+            while ($data = mysqli_fetch_object($rs)) {
+                foreach ($data as $key  => $value) {
+                    $result['content'][$i][$key] = $value;
+                }
+                $i++;
+            }
+        }
+        return $result;
+    }
+
+    public function executeQuery($stmt) {
+
+        $stmt = str_replace("'", "", $stmt);
+        $stmt = str_replace('"', "", $stmt);
+
+        $rs = mysqli_query($this->dbConn, $stmt);
+
+        $result = array();
+
+        if (!$rs) {
+            $result['status'] = false;
+            $result['content'] = $this->dbConn->error;
+        } else {
+            $i = 0;
+            $result['status'] = true;
+            while ($data = mysqli_fetch_object($rs)) {
+                foreach ($data as $key  => $value) {
+                    $result['content'][$i][$key] = $value;
+                }
+                $i++;
+            }
+        }
+
+        return $result;
+    }
+
+    public function getSelectFromTableWithGivenWhere($table, $where, $orderBy, $orderMode){
+        $stmt = 'SELECT * FROM '.$table;
+
+        $where = str_replace("'", "", $where);
+        $where = str_replace('"', "", $where);
+
+        if(!stristr($where,'where')) {
+            $stmt .= ' WHERE '.$where;
+        } else {
+            $stmt .= ' '. $where;
+        }
+
+        if(!empty($orderBy)) {
+            $stmt.= ' ORDER BY '.$orderBy;
+
+            if(!empty($orderMode)) {
+                $stmt .= ' '.$orderMode;
+            }
+        };
+
+        $rs = mysqli_query($this->dbConn, $stmt);
+
+        $result = array();
+        $result['status'] = false;
+        $result['content'] = null;
+
+        if (!$rs) {
+            $result['content'] = $this->dbConn->error;
+        } else {
+            $i = 0;
+            $result['status'] = true;
+            while ($data = mysqli_fetch_object($rs)) {
+                foreach ($data as $key  => $value) {
+                    $result['content'][$i][$key] = $value;
+                }
+                $i++;
+            }
+        }
+
+        return $result;
     }
 }
