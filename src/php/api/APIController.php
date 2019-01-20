@@ -63,7 +63,10 @@ if(isset($_GET['mode']) && !empty($_GET['mode'])) {
     } else {
         echo prepareFailedJsonMsg("This mode does not exist'");
     }
-    echo json_encode($result);
+    if(!empty($result)) {
+        echo json_encode($result);
+    }
+
 } else {
     echo prepareFailedJsonMsg("no parameter 'mode'");
 }
