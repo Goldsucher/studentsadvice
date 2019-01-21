@@ -1,18 +1,63 @@
 Unit_id;Titel
+143001;Mathematik I
+143002;Formale Grundlagen der Informatik
+143003;Mediendesign I
+143004;Technische Grundlagen der Informatik
+143005;Programmierung I (Konzepte)
 143006;Programmierung I (Praxis) Übg.
+143007;Mathematik II
+143008;Betriebssysteme
 143009;Datenbanksysteme
 143010;Programmierung II
+143011;Mediendesign II
+143012;Computergrafik I
 143013;Software Engineering I
+143014;Algorithmen
+143015;Multimedia-Engineering I
+143016;Multimediatechnik (Video)
+143017;Multimediatechnik (Audio)
+143018;Verteilte Systeme I
 143019;Software Engineering II
+143020;Human-Computer Interaction
 143021;IT-Projektmanagement
+143022;Verteilte Systeme II
+143023;Multimedia-Engineering II
+143024;Qualitätsmanagement
+143025;Computergrafik II
+143026;Kommunikation, Präsentation
+143027;Betriebswirtschaftslehre
+143029;Medienprojekt I
+143030;Softwareprojekt I
+143031;Medienprojekt II
+143032;Softwareprojekt II
 143033;Ausgewählte Themen aus dem Medienbereich
 143034;Ausgewählte Themen aus dem Softwarebereich
+143035;Mathematik I Übg.
+143036;Mediendesign I Übg.
+143037;Technische Grundlagen der Informatik Übg.
+143038;Mathematik II Übg.
 143039;Betriebssysteme Übg.
 143040;Datenbanksysteme Übg.
 143041;Programmierung II Übg.
+143042;Mediendesign II Übg.
+143043;Computergrafik I Übg.
 143044;Software Engineering I Übg.
+143045;Algorithmen Übg.
+143046;Multimedia-Engineering I Übg.
+143047;Multimediatechnik (Video) Übg.
+143048;Multimediatechnik I (Audio) Übg.
+143049;Verteilte Systeme I Übg.
 143050;Software Engineering II Übg.
 143051;Human-Computer Interaction Übg.
+143052;Verteilte Systeme II Übg.
+143053;Multimedia-Engineering II Übg.
+143054;Qualitätsmanagement Übg.
+143055;Computergrafik II Übg.
+143056;Kommunikation, Präsentation Übg.
+143057;Medienprojekt I Übg.
+143058;Softwareprojekt I Übg.
+143059;Medienprojekt II Übg.
+143060;Softwareprojekt II Übg.
 143061;Ausgewählte Themen aus dem Medienbereich Übg.
 143062;Ausgewählte Themen aus dem Softwarebereich Übg.
 143063;Bericht Übg.
@@ -20,7 +65,27 @@ Unit_id;Titel
 143065;Mathematik I Übg.
 143066;Mathematik II
 143067;Mathematik II Übg.
+143068;Verteilte Systeme
 143069;Verteilte Systeme Übg.
+143070;Fortgeschrittene Programmier- und Architekturkonzepte
+143071;Fortgeschrittene Programmier- und Architekturkonzepte Übg.
+143072;Kommunikation und Präsentation
+143073;Kommunikation und Präsentation Übg.
+143074;Qualitäts- und Projektmanagement
+143075;Qualitäts- und Projektmanagement Übg.
+143076;Medienprojekt I
+143077;Medienprojekt I Übg.
+143078;Medienprojekt II
+143079;Medienprojekt II Übg.
+143080;Softwareprojekt I
+143081;Softwareprojekt I Übg.
+143082;Softwareprojekt II
+143083;Softwareprojekt II Übg.
+143084;Computergrafik II Übg.
+143085;Multimedia-Engineering I Übg.
+143086;Multimedia-Engineering II Übg.
+143087;Multimediatechnik (Video) Übg.
+143088;Multimediatechnik (Audio) Übg.
 143097;Cross Plattform Mobile Development
 143098;Cross Plattform Mobile Development Übg.
 143099;Maya
@@ -70,6 +135,7 @@ Unit_id;Titel
 143168;Betriebswirtschaftslehre
 143169;Medienproduktion und -distribution
 143170;Effiziente Software Entwickeln mit C++
+143171;Programmiersprachen und -paradigmen
 143172;Anwendungsentwicklung  für IOS-Geräte
 143173;Mobile Anwendungsentwicklung
 143174;Visual and Scientific Computing

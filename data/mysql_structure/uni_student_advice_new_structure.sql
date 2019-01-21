@@ -3,10 +3,11 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Erstellungszeit: 17. Jan 2019 um 08:49
+-- Erstellungszeit: 21. Jan 2019 um 17:38
 -- Server-Version: 8.0.12
 -- PHP-Version: 7.1.19
 
+SET FOREIGN_KEY_CHECKS=0;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
 START TRANSACTION;
@@ -35,21 +36,6 @@ CREATE TABLE `abschluss` (
   `Student_id` int(11) NOT NULL,
   `Semester` int(11) NOT NULL,
   `FachEndNote` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Tabellenstruktur für Tabelle `doppelteNoten`
---
-
-DROP TABLE IF EXISTS `doppelteNoten`;
-CREATE TABLE `doppelteNoten` (
-  `Student_id` int(11) NOT NULL,
-  `Unit_id` int(11) NOT NULL,
-  `Semester` int(11) NOT NULL,
-  `Note` varchar(11) NOT NULL,
-  `BNF` varchar(5) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -144,6 +130,18 @@ CREATE TABLE `units_extension` (
   `Durchschnittsnote_5` decimal(3,2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `units_original`
+--
+
+DROP TABLE IF EXISTS `units_original`;
+CREATE TABLE `units_original` (
+  `Unit_id` int(11) NOT NULL,
+  `Titel` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 --
 -- Indizes der exportierten Tabellen
 --
@@ -195,16 +193,11 @@ ALTER TABLE `hzb_extension`
   ADD CONSTRAINT `hzb_extension_ibfk_1` FOREIGN KEY (`Student_id`) REFERENCES `hzb` (`student_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints der Tabelle `units_equivalence`
---
-ALTER TABLE `units_equivalence`
-  ADD CONSTRAINT `units_equivalence_ibfk_1` FOREIGN KEY (`Unit_id`) REFERENCES `units` (`Unit_id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
 -- Constraints der Tabelle `units_extension`
 --
 ALTER TABLE `units_extension`
   ADD CONSTRAINT `units_extension_ibfk_1` FOREIGN KEY (`Unit_id`) REFERENCES `units` (`Unit_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+SET FOREIGN_KEY_CHECKS=1;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
