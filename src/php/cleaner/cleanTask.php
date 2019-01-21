@@ -23,6 +23,14 @@ echo 'do special customizations'.$phpEOL;
 $cleanHelper->removeNonBachelor();
 echo "removed all non bachelor...".$phpEOL;
 
+//synchronize units_equivalence with units-Table
+$cleanHelper->synchronizeEquivalenceTableWithUnits();
+echo "synchronized units_equivalence with units-Table...".$phpEOL;
+
+//synchronize units_equivalence with units-Table
+$cleanHelper->synchronizeEquivalenceTableWithNoten();
+echo "synchronized units_equivalence with noten-Table...".$phpEOL;
+
 //prepare extension tables
 $cleanHelper->prepareExtensionTables();
 echo "prepared extension tables".$phpEOL;

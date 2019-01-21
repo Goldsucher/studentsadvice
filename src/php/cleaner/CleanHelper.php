@@ -113,6 +113,9 @@ class CleanHelper
 
         $stmt = "ALTER TABLE temp RENAME " . $extraTable;
         mysqli_query($this->dbConn, $stmt);
+
+        $stmt = "DROP TABLE " . $extraTable;
+        mysqli_query($this->dbConn, $stmt);
     }
 
     public function changeColumnValue($table, $column, $oldValue, $newValue)
@@ -127,9 +130,7 @@ class CleanHelper
         $rs = mysqli_query($this->dbConn, $stmt);
 
         if (!$rs) {
-            echo "<pre>";
             var_dump($this->dbConn->error);
-            echo "</pre>";
             die();
 
         } else {
@@ -240,9 +241,7 @@ class CleanHelper
             $rs = mysqli_query($this->dbConn, $stmt);
 
             if (!$rs) {
-                echo "<pre>";
-                 var_dump($this->dbConn->error);
-                echo "</pre>";
+                var_dump($this->dbConn->error);
                 die();
 
             } else {
@@ -266,9 +265,7 @@ class CleanHelper
         $ids = array();
 
         if (!$rs) {
-            echo "<pre>";
             var_dump($this->dbConn->error);
-            echo "</pre>";
             die();
 
         } else {
@@ -333,9 +330,7 @@ class CleanHelper
         $result = array();
 
         if (!$rs) {
-            echo "<pre>";
             var_dump($this->dbConn->error);
-            echo "</pre>";
             die();
 
         } else {
@@ -367,6 +362,69 @@ class CleanHelper
 
         }
         fclose($fileHandle);
+    }
+
+    public function synchronizeEquivalenceTableWithUnits() {
+        $stmt = "DROP TABLE units_original";
+        mysqli_query($this->dbConn, $stmt);
+
+        $stmt = "CREATE TABLE units_original SELECT DISTINCT * FROM units";
+        mysqli_query($this->dbConn, $stmt);
+
+        $stmt = "SELECT * FROM units_equivalence";
+        $rs = mysqli_query($this->dbConn, $stmt);
+
+        if (!$rs) {
+            var_dump($this->dbConn->error);
+            die();
+
+        } else {
+            $i = 0;
+            while ($data = mysqli_fetch_object($rs)) {
+                $result = array();
+                foreach ($data as $key => $value) {
+                    $result[$key] = $value;
+                }
+                $stmt = null;
+                if(($result['Unit_id_final'] != $result['Unit_id']) && !empty($result['Titel_2017'])) {
+                    $stmt = "DELETE FROM units WHERE Unit_id =" . $result['Unit_id'];
+
+                } elseif($result['Unit_id_final'] === $result['Unit_id']) {
+                    if(!empty($result['Titel_2017']) && $result['Type_2017'] == 'SU') {
+                        $stmt = "UPDATE units SET Titel = ".$result['Titel_2017']." WHERE units.Unit_id = " . $result['Unit_id'];
+                    } elseif(!empty($result['Titel_2017']) && $result['Type_2017'] == 'Ü') {
+                        $stmt = "UPDATE units SET Titel = ".$result['Titel_2017']." (Übg.) WHERE units.Unit_id = " . $result['Unit_id'];
+                    }
+                }
+                if(!empty($stmt)){
+                    mysqli_query($this->dbConn, $stmt);
+                }
+                $i++;
+            }
+        }
+    }
+
+    public function synchronizeEquivalenceTableWithNoten() {
+
+        $stmt = "SELECT Unit_id, Unit_id_final FROM units_equivalence";
+        $rs = mysqli_query($this->dbConn, $stmt);
+
+        if (!$rs) {
+            var_dump($this->dbConn->error);
+            die();
+
+        } else {
+            $i = 0;
+            while ($data = mysqli_fetch_object($rs)) {
+                $result = array();
+                foreach ($data as $key => $value) {
+                    $result[$key] = $value;
+                }
+                $this->changeColumnValue("noten", "Unit_id", $result['Unit_id'], $result['Unit_id_final']);
+                $i++;
+            }
+        }
+
     }
 
     private function truncateTable($table) {
