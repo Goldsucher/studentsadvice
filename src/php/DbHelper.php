@@ -254,7 +254,7 @@ class dbHelper
 
         $i=0;
         foreach($allDropOuts['content'] as $dropOut) {
-            $tmp = $this->getDurationOfStudy($dropOut);
+            $tmp = $this->getDurationUntilAbort($dropOut);
             if($tmp['status']) {
                 $result['content'][$i]['Student_id'] = $dropOut;
                 $result['content'][$i]['Dauer'] = $tmp['content'];
@@ -291,8 +291,86 @@ class dbHelper
         return $result;
     }
 
-    public function getDurationOfStudy($student_id) {
+    public function getDurationUntilAbort($student_id) {
         $stmt = "SELECT MAX(noten.Semester) -  hzb.Semester + 1 FROM hzb LEFT JOIN Noten ON hzb.Student_id = noten.Student_id WHERE hzb.Student_id = ".$student_id;
+        $rs = mysqli_query($this->dbConn, $stmt);
+
+        $result = array();
+
+        if (!$rs) {
+            $result['status'] = false;
+            $result['content'] = $this->dbConn->error;
+        } else {
+            $result['status'] = true;
+            while ($data = mysqli_fetch_object($rs)) {
+                foreach ($data as $key  => $value) {
+                    $result['content'] = $value;
+                }
+            }
+        }
+
+        return $result;
+    }
+
+    public function getDurationOfGraduationAll() {
+        $allGraduates = $this->getAllGraduates();
+
+        $result['status'] = true;
+
+        $i=0;
+        foreach($allGraduates['content'] as $graduate) {
+            $tmp = $this->getDurationUntilDegree($graduate);
+            if($tmp['status']) {
+                //$result['content'][$i]['Student_id'] = $graduate;
+                $durations[$i] = $tmp['content'];
+            } else {
+                return $tmp;
+            }
+            $i++;
+        }
+
+        $i=0;
+        foreach(array_unique($durations)as $duration) {
+            $count = 0;
+            for ($j = 0; $j < sizeof($durations); $j++) {
+                if ($durations[$j] == $duration) {
+                    $count++;
+                }
+            }
+            $result['content'][$i]['dauer'] = $duration;
+            $result['content'][$i]['anzahlDauer'] = $count;
+            $i++;
+        }
+
+        return $result;
+    }
+
+    public function getAllGraduates() {
+
+        $result = array();
+
+        $stmt = "SELECT abschluss.Student_id FROM abschluss";
+        $rs = mysqli_query($this->dbConn, $stmt);
+
+        if (!$rs) {
+            $result['status'] = false;
+            $result['content'] = $this->dbConn->error;
+        } else {
+            $i = 0;
+            $result['status'] = true;
+            while ($data = mysqli_fetch_object($rs)) {
+                foreach ($data as $key  => $value) {
+                    $result['content'][$i]= $value;
+                }
+                $i++;
+            }
+        }
+
+        return $result;
+    }
+
+    public function getDurationUntilDegree($student_id) {
+        $stmt = "SELECT abschluss.Semester -  hzb.Semester + 1 FROM hzb LEFT JOIN abschluss ON hzb.Student_id = abschluss.Student_id WHERE hzb.Student_id = ".$student_id;
         $rs = mysqli_query($this->dbConn, $stmt);
 
         $result = array();

@@ -12,39 +12,26 @@ require_once(__DIR__.'/../DbHelper.php');
 $dbHelper = new dbHelper($dbConn);
 
 if(isset($_GET['apikey']) && $_GET['apikey'] == $config->getConfigValue("api.key")) {
-    if(isset($_GET['mode']) && !empty($_GET['mode'])) {
-        if ($_GET['mode'] == 'all') {
-
-            if (isset($_GET['table']) && !empty($_GET['table'])) {
-                $orderBy = null;
-                $orderMode = null;
-                if (isset($_GET['orderBy']) && !empty($_GET['orderBy'])) {
-                    $orderBy = $_GET['orderBy'];
-                    if (isset($_GET['orderMode']) && !empty($_GET['orderMode'])) {
-                        $orderMode = $_GET['orderMode'];
-                    }
-                }
-                $result = $dbHelper->getSelectAllFromTable($_GET['table'], $orderBy, $orderMode);
-                echo json_encode($result);
-            } else {
-
-                echo prepareFailedJsonMsg("Missing table parameter");
+    if (isset($_GET['table']) && !empty($_GET['table'])) {
+        $orderBy = null;
+        $orderMode = null;
+        if (isset($_GET['orderBy']) && !empty($_GET['orderBy'])) {
+            $orderBy = $_GET['orderBy'];
+            if (isset($_GET['orderMode']) && !empty($_GET['orderMode'])) {
+                $orderMode = $_GET['orderMode'];
             }
-
-        } else {
-            echo prepareFailedJsonMsg("This mode does not exist'");
         }
+        $result = $dbHelper->getSelectAllFromTable($_GET['table'], $orderBy, $orderMode);
         if(!empty($result)) {
             echo json_encode($result);
         }
-
-    } elseif($_GET['diagram'] && !empty($_GET['diagram'])) {
+    }elseif($_GET['diagram'] && !empty($_GET['diagram'])) {
         switch ($_GET['diagram']) {
             case 'timeline_student':
-                if(isset($_GET['student']) && ((empty($_GET['student']) && $_GET['student'] == '0') || !empty($_GET['student']))) {
-                //$dbHelper->getAndPrepareTimelineInformationsForAStudent($_GET['student']);
+                if (isset($_GET['student']) && ((empty($_GET['student']) && $_GET['student'] == '0') || !empty($_GET['student']))) {
+                    //$dbHelper->getAndPrepareTimelineInformationsForAStudent($_GET['student']);
                     echo "<pre>";
-                        var_dump($dbHelper->getAndPrepareTimelineInformationsForAStudent($_GET['student']));
+                    var_dump($dbHelper->getAndPrepareTimelineInformationsForAStudent($_GET['student']));
                     echo "</pre>";
                 } else {
                     echo prepareFailedJsonMsg("no student id given");
@@ -56,12 +43,16 @@ if(isset($_GET['apikey']) && $_GET['apikey'] == $config->getConfigValue("api.key
                 echo json_encode($dbHelper->getDataFromDurationOfStudyByAllDropOut());
                 break;
 
+            case 'duration_of_graduation':
+                echo json_encode($dbHelper->getDurationOfGraduationAll());
+                break;
+
             default:
                 echo prepareFailedJsonMsg("wrong diagram mode given");
                 break;
         }
     } else {
-        echo prepareFailedJsonMsg("no parameter 'mode'");
+        echo prepareFailedJsonMsg("diagram or table parameter not exists'");
     }
 } else {
     echo prepareFailedJsonMsg("wrong or no api key'");
