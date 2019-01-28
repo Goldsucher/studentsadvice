@@ -292,7 +292,7 @@ class dbHelper
     }
 
     public function getDurationUntilAbort($student_id) {
-        $stmt = "SELECT MAX(noten.Semester) -  hzb.Semester + 1 FROM hzb LEFT JOIN Noten ON hzb.Student_id = noten.Student_id WHERE hzb.Student_id = ".$student_id;
+        $stmt = "SELECT MAX(noten.Semester) -  hzb.Semester + 1 FROM hzb LEFT JOIN noten ON hzb.Student_id = noten.Student_id WHERE hzb.Student_id = ".$student_id;
         $rs = mysqli_query($this->dbConn, $stmt);
 
         $result = array();
