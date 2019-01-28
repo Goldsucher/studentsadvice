@@ -4,7 +4,7 @@ require_once('src/php/DbHelper.php');
 
 $dbHelper = new dbHelper($dbConn);
 
-$gradesConditions = array('NT', 'belegt', '5,0', 'o.E.');
+$gradesConditions = array('NT', 'belegt', '5.0', 'o.E.');
 
 
 if(isset($_GET['timeline'])) {
@@ -12,8 +12,14 @@ if(isset($_GET['timeline'])) {
 
     $smarty->assign('timeline', $student);
     $smarty->display('show_student_timeline.tpl');
-} elseif(isset($_GET['line_chart'])) {
-    $student = $_GET['line_chart'];
+} elseif(isset($_GET['timeline_2'])) {
+    $student = json_encode($dbHelper->getAndPrepareTimelineInformationsForAStudent($_GET['timeline_2']));
+
+    $smarty->assign('student', $student);
+    $smarty->display('show_student_timeline_2.tpl');
+
+}elseif(isset($_GET['line_chart'])) {
+    $student = json_encode($_GET['line_chart']);
 
     $smarty->assign('student', $student);
     $smarty->display('show_student_linechart.tpl');

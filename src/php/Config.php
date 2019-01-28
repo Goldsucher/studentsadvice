@@ -21,6 +21,7 @@ class Config
         $this->config['path.smarty.cache'] = $this->config['path.app']. '/../../temp/smarty/cache/';
         $this->config['path.smarty.compile'] = $this->config['path.app']. '/../../temp/smarty/templates_c/';
 
+        $this->config['api.key'] = "264c8c381bf16c982a4e59b0dd4c6f7808c51a05f64c35db42cc78a2a72875bb"; // student sha256
     }
 
     public function getConfigValue($key) {

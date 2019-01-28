@@ -2,8 +2,6 @@
     <div id="container" style="width: 100%;">
         <canvas id="canvas{$gradekey}"></canvas>
 
-
-
         {foreach from=$grade item=item}
             {$item.Unit_id}: {$item.Titel}
         {if $item.Wahlpflicht eq 1}
@@ -51,11 +49,6 @@
             }]
 
         };
-
-        /*var ctx{$gradekey} = document.getElementById('canvas{$gradekey}').getContext('2d');
-        new Chart(ctx{$gradekey}, barChartData{$gradekey});*/
-
-
             var ctx{$gradekey} = document.getElementById('canvas{$gradekey}').getContext('2d');
             window.myBar = new Chart(ctx{$gradekey}, {
                 type: 'bar',
