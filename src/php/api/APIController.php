@@ -38,13 +38,17 @@ if(isset($_GET['apikey']) && $_GET['apikey'] == $config->getConfigValue("api.key
                 }
                 break;
 
-            case 'duration_of_study':
+            case 'duration_of_study_dropouts':
 
                 echo json_encode($dbHelper->getDataFromDurationOfStudyByAllDropOut());
                 break;
 
             case 'duration_of_graduation':
                 echo json_encode($dbHelper->getDurationOfGraduationAll());
+                break;
+
+            case 'grade_distribution_per_semester':
+                echo json_encode($dbHelper->getGradeDistributionPerSemester());
                 break;
 
             default:

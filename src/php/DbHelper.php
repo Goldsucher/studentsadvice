@@ -389,4 +389,170 @@ class dbHelper
 
         return $result;
     }
+
+    public function getGradeDistributionPerSemester() {
+        $allGraduates = $this->getAllGraduates();
+        $allDropOuts = $this->getAllDropOuts();
+        $allScheduledSemester = $this->getAllScheduledSemesterWithoutElectiveCourses();
+
+        $result = array();
+        $result['status'] = true;
+        if($allScheduledSemester['status']) {
+            // nur alle Absolventen
+            if ($allGraduates['status']) {
+                $result['content']['allGraduates']['student_ids'] = $allGraduates['content'];
+                foreach ($allScheduledSemester['content'] as $semester) {
+                    $stmt = "SELECT units.Unit_id, units.Titel FROM units LEFT JOIN units_extension ON units.Unit_id = units_extension.Unit_id WHERE units_extension.Plansemester = ".$semester." ORDER BY Plansemester";
+                    $rs = mysqli_query($this->dbConn, $stmt);
+
+                    $unitIdsPerSemester = array();
+                    if (!$rs) {
+                        $unitIdsPerSemester['status'] = false;
+                        $unitIdsPerSemester['content'] = $this->dbConn->error;
+                        return $unitIdsPerSemester;
+                    } else {
+                        $x=0;
+                        while ($data = mysqli_fetch_object($rs)) {
+                            foreach ($data as $key  => $value) {
+                                $unitIdsPerSemester[$x][$key] = $value;
+                            }
+                            $x++;
+                        }
+                        $notes = array();
+                        foreach($unitIdsPerSemester as $unitIdPerSemester) {
+                            $tmpIds = join("','", $allGraduates['content']);
+                            $stmt = "SELECT Note FROM noten WHERE Note NOT IN ('m.E','belegt','e.n.b','NT','PR') AND BNF = 5 AND Unit_id = ".$unitIdPerSemester['Unit_id']. " AND Student_id IN ("."'".$tmpIds."'".")";
+                            $rs = mysqli_query($this->dbConn, $stmt);
+
+                            if (!$rs) {
+                                $notes['status'] = false;
+                                $notes['content'] = $this->dbConn->error;
+                                return $notes;
+                            } else {
+                                while ($data = mysqli_fetch_object($rs)) {
+                                    foreach ($data as $key => $value) {
+                                        $result['content']['allGraduates']['semester'][$semester][$unitIdPerSemester['Titel']][] = $value;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            } else {
+                return $allGraduates;
+            }
+            // nur Abbrechher
+            if($allDropOuts['status']) {
+                $result['content']['allDropouts']['student_ids'] = $allDropOuts['content'];
+                foreach ($allScheduledSemester['content'] as $semester) {
+                    $stmt = "SELECT units.Unit_id, units.Titel FROM units LEFT JOIN units_extension ON units.Unit_id = units_extension.Unit_id WHERE units_extension.Plansemester = " . $semester . " ORDER BY Plansemester";
+                    $rs = mysqli_query($this->dbConn, $stmt);
+
+                    $unitIdsPerSemester = array();
+                    if (!$rs) {
+                        $unitIdsPerSemester['status'] = false;
+                        $unitIdsPerSemester['content'] = $this->dbConn->error;
+                        return $unitIdsPerSemester;
+                    } else {
+                        $x = 0;
+                        while ($data = mysqli_fetch_object($rs)) {
+                            foreach ($data as $key => $value) {
+                                $unitIdsPerSemester[$x][$key] = $value;
+                            }
+                            $x++;
+                        }
+                        $notes = array();
+                        foreach ($unitIdsPerSemester as $unitIdPerSemester) {
+                            $tmpIds = join("','", $allDropOuts['content']);
+                            $stmt = "SELECT Note FROM noten WHERE Note NOT IN ('m.E','belegt','e.n.b','NT','PR') AND BNF = 5 AND Unit_id = " . $unitIdPerSemester['Unit_id'] . " AND Student_id IN (" . "'" . $tmpIds . "'" . ")";
+                            $rs = mysqli_query($this->dbConn, $stmt);
+
+                            if (!$rs) {
+                                $notes['status'] = false;
+                                $notes['content'] = $this->dbConn->error;
+                                return $notes;
+                            } else {
+                                while ($data = mysqli_fetch_object($rs)) {
+                                    foreach ($data as $key => $value) {
+                                        $result['content']['allDropouts']['semester'][$semester][$unitIdPerSemester['Titel']][] = $value;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            } else {
+                return $allDropOuts;
+            }
+
+            $allStudents = array_merge($allDropOuts['content'], $allGraduates['content']);
+            if(!empty($allStudents)){
+                $result['content']['allStudents']['student_ids'] = $allStudents;
+                foreach ($allScheduledSemester['content'] as $semester) {
+                    $stmt = "SELECT units.Unit_id, units.Titel FROM units LEFT JOIN units_extension ON units.Unit_id = units_extension.Unit_id WHERE units_extension.Plansemester = " . $semester . " ORDER BY Plansemester";
+                    $rs = mysqli_query($this->dbConn, $stmt);
+
+                    $unitIdsPerSemester = array();
+                    if (!$rs) {
+                        $unitIdsPerSemester['status'] = false;
+                        $unitIdsPerSemester['content'] = $this->dbConn->error;
+                        return $unitIdsPerSemester;
+                    } else {
+                        $x = 0;
+                        while ($data = mysqli_fetch_object($rs)) {
+                            foreach ($data as $key => $value) {
+                                $unitIdsPerSemester[$x][$key] = $value;
+                            }
+                            $x++;
+                        }
+                        $notes = array();
+                        foreach ($unitIdsPerSemester as $unitIdPerSemester) {
+                            $tmpIds = join("','", $allStudents);
+                            $stmt = "SELECT Note FROM noten WHERE Note NOT IN ('m.E','belegt','e.n.b','NT','PR') AND BNF = 5 AND Unit_id = " . $unitIdPerSemester['Unit_id'] . " AND Student_id IN (" . "'" . $tmpIds . "'" . ")";
+                            $rs = mysqli_query($this->dbConn, $stmt);
+
+                            if (!$rs) {
+                                $notes['status'] = false;
+                                $notes['content'] = $this->dbConn->error;
+                                return $notes;
+                            } else {
+                                while ($data = mysqli_fetch_object($rs)) {
+                                    foreach ($data as $key => $value) {
+                                        $result['content']['allStudents']['semester'][$semester][$unitIdPerSemester['Titel']][] = $value;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+            }
+
+        } else {
+            return $allScheduledSemester;
+        }
+
+        return $result;
+    }
+
+    public function getAllScheduledSemesterWithoutElectiveCourses() {
+        $stmt = "SELECT DISTINCT(units_extension.Plansemester) FROM units_extension WHERE units_extension.Plansemester NOT IN (0, 45) ORDER BY Plansemester";
+        $rs = mysqli_query($this->dbConn, $stmt);
+
+        $result = array();
+
+        if (!$rs) {
+            $result['status'] = false;
+            $result['content'] = $this->dbConn->error;
+        } else {
+            $result['status'] = true;
+            while ($data = mysqli_fetch_object($rs)) {
+                foreach ($data as $key  => $value) {
+                    $result['content'][] = $value;
+                }
+            }
+        }
+
+        return $result;
+    }
 }
