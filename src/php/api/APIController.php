@@ -51,6 +51,15 @@ if(isset($_GET['apikey']) && $_GET['apikey'] == $config->getConfigValue("api.key
                 echo json_encode($dbHelper->getGradeDistributionPerSemester());
                 break;
 
+            case 'number_of_dropouts_per_semester':
+                echo json_encode($dbHelper->getNumberOfDropoutsPerSemester());
+                break;
+
+            /*case 'number_of_finally_failed_per_course':
+                echo json_encode($dbHelper->getNumberOfFinallyFailedPerCourse());
+                break;*/
+
+
             default:
                 echo prepareFailedJsonMsg("wrong diagram mode given");
                 break;

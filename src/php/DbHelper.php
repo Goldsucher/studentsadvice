@@ -398,7 +398,7 @@ class dbHelper
         $result = array();
         $result['status'] = true;
         if($allScheduledSemester['status']) {
-            // nur alle Absolventen
+            // nur Absolventen
             if ($allGraduates['status']) {
                 $result['content']['allGraduates']['student_ids'] = $allGraduates['content'];
                 foreach ($allScheduledSemester['content'] as $semester) {
@@ -555,4 +555,81 @@ class dbHelper
 
         return $result;
     }
+
+    public function getNumberOfDropoutsPerSemester() {
+        $allDropouts = $this->getAllDropOuts();
+
+        $result['status'] = true;
+        $durations = array();
+        foreach($allDropouts['content'] as $dropout) {
+            $tmp = $this->getDurationUntilAbort($dropout);
+            if($tmp['status']) {
+                $durations[] = $tmp['content'];
+            } else {
+                return $tmp;
+            }
+        }
+
+        $result['content'] = array_count_values($durations);
+        ksort($result['content']);
+
+        return $result;
+    }
+
+    public function getNumberOfFinallyFailedPerCourse(){
+        $allDropouts = $this->getAllDropOuts();
+
+        $result['status'] = true;
+        $coursesByStudent = array();
+        $tmp = array();
+        foreach($allDropouts['content'] as $dropout){
+            $coursesByStudent = $this->getAllCoursesByStudent($dropout);
+            foreach($coursesByStudent as $course) {
+                $stmt = "SELECT COUNT(Note) FROM noten WHERE noten.Student_id = ". $dropout. " AND Unit_id = " .$course. " AND Note = 5";
+                $rs = mysqli_query($this->dbConn, $stmt);
+
+                if (!$rs) {
+                    $result['status'] = false;
+                    $result['content'] = $this->dbConn->error;
+                    return $result;
+                } else {
+                    while ($data = mysqli_fetch_object($rs)) {
+                        foreach ($data as $value) {
+                            if($value == 3) {
+                                echo "<pre>";
+                                var_dump($course,$dropout);
+                                echo "</pre>";
+                            }
+                            //$tmp[] = $value;
+                        }
+                    }
+                }
+            }
+        }
+        /*echo "<pre>";
+        var_dump($tmp);
+        echo "</pre>";*/
+    }
+
+    public function getAllCoursesByStudent($student_id) {
+        $stmt = 'SELECT DISTINCT(noten.Unit_id) FROM noten WHERE noten.Student_id = '. $student_id;
+        $rs = mysqli_query($this->dbConn, $stmt);
+
+        $result = array();
+
+        if (!$rs) {
+            $result['status'] = false;
+            $result['content'] = $this->dbConn->error;
+            return $result;
+        } else {
+            while ($data = mysqli_fetch_object($rs)) {
+                foreach ($data as $value) {
+                    $result[] = $value;
+                }
+            }
+        }
+
+        return $result;
+    }
+
 }
