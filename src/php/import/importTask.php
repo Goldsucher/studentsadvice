@@ -4,7 +4,7 @@ require_once(__DIR__.'/../setup.inc.php');
 require_once(__DIR__.'/ImportHelper.php');
 require_once('ImportConfig.php');
 
-$importHelper = new ImportHelper($dbConn);
+$importHelper = new ImportHelper($importdbConn);
 $importConfig = new ImportConfig();
 
 // New Line: Differentiation between CLI and web browser
