@@ -20,7 +20,6 @@ foreach($importConfig->getConfigValue('import.files') as $key => $item){
 
     if(file_exists($filePath)) {
         try{
-
             $importHelper->writeCSVinTableLinewise($filePath, $item['table'], $importConfig->getConfigValue("import.column.mapping")[$key], $importConfig->getConfigValue("import.file.firstline"));
             echo 'file: '.$item['file'].$importConfig->getConfigValue('import.file.type').' | table: '.$item['table'].' - import successfull'.$phpEOL;
 

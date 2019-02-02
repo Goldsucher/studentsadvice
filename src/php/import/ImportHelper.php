@@ -16,6 +16,10 @@ class ImportHelper
         $fileHandle = fopen($filePath, "r");
         $i=0;
 
+        $maxCounter= 100;
+        $counter = 0;
+        $increment = 100;
+
         while (!feof($fileHandle)) {
             $line = fgets($fileHandle);
             $tmpData = explode(';', $line);
@@ -32,6 +36,11 @@ class ImportHelper
                 //do mysql query
                 $query = $this->buildInsertString($rowContent, $table);
                 $result = mysqli_query($this->dbConn, $query);
+                $counter++;
+                if($counter == $maxCounter){
+                    echo $counter. "imports";
+                    $maxCounter += $increment;
+                }
 
                 if(!$result){
                     if(strstr($this->dbConn->error, 'Duplicate entry')){
