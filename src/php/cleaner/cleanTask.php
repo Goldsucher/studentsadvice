@@ -12,7 +12,7 @@ if (php_sapi_name() == "cli") {
 $idsWithElective = 'ids_elective.txt'; // path
 $scheduledSemester = 'scheduled_semester.csv'; // path
 
-$cleanHelper = new CleanHelper($dbConn);
+$cleanHelper = new CleanHelper($importdbConn);
 echo "Cleaning Datasets started...".$phpEOL;
 
 //special customizations

@@ -29,10 +29,7 @@ if(isset($_GET['apikey']) && $_GET['apikey'] == $config->getConfigValue("api.key
         switch ($_GET['diagram']) {
             case 'timeline_student':
                 if (isset($_GET['student']) && ((empty($_GET['student']) && $_GET['student'] == '0') || !empty($_GET['student']))) {
-                    //$dbHelper->getAndPrepareTimelineInformationsForAStudent($_GET['student']);
-                    echo "<pre>";
-                    var_dump($dbHelper->getAndPrepareTimelineInformationsForAStudent($_GET['student']));
-                    echo "</pre>";
+                    echo json_encode($dbHelper->getAndPrepareTimelineInformationsForAStudent($_GET['student']));
                 } else {
                     echo prepareFailedJsonMsg("no student id given");
                 }
@@ -55,7 +52,7 @@ if(isset($_GET['apikey']) && $_GET['apikey'] == $config->getConfigValue("api.key
                 echo json_encode($dbHelper->getNumberOfDropoutsPerSemester());
                 break;
 
-            /*case 'number_of_finally_failed_per_course':
+            /*case 'number_of_finally_failed_per_course': // STEFFEN
                 echo json_encode($dbHelper->getNumberOfFinallyFailedPerCourse());
                 break;*/
 
