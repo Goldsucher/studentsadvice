@@ -8,40 +8,47 @@ class ImportHelper
         $this->dbConn = $dbConn;
     }
 
-    public function writeCSVinTableLinewise($filePath, $table){
+    public function writeCSVinTableLinewise($filePath, $table, $mapper, $firstLine = true){
 
         $this->truncateTable($table);
 
         $columns =array();
         $fileHandle = fopen($filePath, "r");
-        $firstLine = true;
         $i=0;
+
+        $maxCounter= 100;
+        $counter = 0;
+        $increment = 100;
 
         while (!feof($fileHandle)) {
             $line = fgets($fileHandle);
-            $tmp = explode(';', $line);
+            $tmpData = explode(';', $line);
             if($firstLine){
-                $columns = $tmp;
+                $columns = $this->columnNameMapping($tmpData, $mapper);
                 $firstLine = false;
             } elseif (!$firstLine) {
                 $j = 0;
                 foreach($columns as $col){
-                    $rowContent[trim($col)] = trim($tmp[$j]);
+                    $rowContent[trim($col)] = trim($tmpData[$j]);
                     $j++;
                 }
 
                 //do mysql query
                 $query = $this->buildInsertString($rowContent, $table);
                 $result = mysqli_query($this->dbConn, $query);
+                $counter++;
+                if($counter == $maxCounter){
+                    echo $counter. "imports";
+                    $maxCounter += $increment;
+                }
 
                 if(!$result){
                     if(strstr($this->dbConn->error, 'Duplicate entry')){
                         $errors['duplicates'][] = $this->dbConn->error;
-                        echo "<pre>";
                             var_dump($query,$this->dbConn->error);
-                        echo "</pre>";
                         continue;
                     } else {
+                        var_dump($this->dbConn->error);
                         $errors[] = $this->dbConn->error;
                         $errors['status'] = false;
                         $errors['numberOfImports'] = $i;
@@ -58,11 +65,23 @@ class ImportHelper
 
     public function truncateTable($table){
 
+        $query = ("SET FOREIGN_KEY_CHECKS = 0");
+        mysqli_query($this->dbConn, $query);
         $query = ("TRUNCATE TABLE ". $table);
         mysqli_query($this->dbConn, $query);
+        $query = ("SET FOREIGN_KEY_CHECKS = 1");
+        mysqli_query($this->dbConn, $query);
+
     }
 
+    private function columnNameMapping($data, $mapper) {
 
+        foreach($data as $key => $value) {
+            $data[$key] = $mapper[trim($value)];
+        }
+
+        return $data;
+    }
 
     private function buildInsertString($data, $table){
 
@@ -72,6 +91,9 @@ class ImportHelper
 
         foreach($data as $col => $val){
             $columns .= "`".$col."`,";
+            if($table == "noten") {
+                $val = str_replace(',', '.', $val);
+            }
             $values .= "'".$val."',";
         }
 

@@ -47,7 +47,7 @@ $(document).ready(function() {
                labels: takenSemester,
                datasets: [
                    {
-                       label: "Take Courses",
+                       label: "Taken Courses",
                        data: takenNumberOfCourses,
                        backgroundColor: ['rgba(105, 0, 132, .2)',],
                        borderColor: ['rgba(200, 99, 132, .7)',],
@@ -68,7 +68,6 @@ $(document).ready(function() {
                 type: 'line',
                 data: chartData
             });
-
         }
     });
 });

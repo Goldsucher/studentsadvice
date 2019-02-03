@@ -1,0 +1,4 @@
+AuthType Basic
+AuthName "Protected Area"
+AuthUserFile /Users/locke/Sites/uni_masterproject/studentsadvice/.htpasswd
+Require valid-user

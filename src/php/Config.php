@@ -13,40 +13,22 @@ class Config
         $this->config['db.mysql.user'] = 'user';
         $this->config['db.mysql.pass'] = '$tud3nT';
 
+        // Database configuration
+        $this->config['import.mysql.host'] = '127.0.0.1';
+        $this->config['import.mysql.name'] = 'uni_students_advice';
+        $this->config['import.mysql.user'] = 'user';
+        $this->config['import.mysql.pass'] = 'user123';
+
         // paths
         $this->config['path.app'] = __DIR__;
-
-        //import
-        $this->config['import.files.dir'] = $this->config['path.app']. '/../../data/original/';
-        $this->config['import.file.type'] = '.csv';
-        $this->config['import.files'] = array(
-            /*'hzb' => array(
-                'file' => 'pseudohzb',
-                'table' => 'hzb'
-            ),
-            'abschluss' => array(
-                'file' => 'pseudoabschluss',
-                'table' => 'abschluss'
-            ),*/
-            'noten' => array(
-                'file' => 'pseudonoten_sorted',
-                'table' => 'noten'
-            )/*,
-            'units' => array(
-                'file' => 'units',
-                'table' => 'units'
-            )*/
-
-        );
 
         //smarty
         $this->config['path.smarty.templates'] = $this->config['path.app']. '/../../templates/';
         $this->config['path.smarty.cache'] = $this->config['path.app']. '/../../temp/smarty/cache/';
         $this->config['path.smarty.compile'] = $this->config['path.app']. '/../../temp/smarty/templates_c/';
 
+        $this->config['api.key'] = "264c8c381bf16c982a4e59b0dd4c6f7808c51a05f64c35db42cc78a2a72875bb"; // student sha256
     }
-
-
 
     public function getConfigValue($key) {
         if(isset($this->config[$key])){

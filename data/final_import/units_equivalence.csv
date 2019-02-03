@@ -1,0 +1,147 @@
+ID (Unit);ID (2005);Title (2005);Type (2005);ID (2012);Title (2012);Type (2012);ID (2017);Title (2017);Type (2017);ID (Final)
+143001;143001;Mathematik I;SU;143064;Mathematik I;SU;143064;Mathematik I;SU;143064
+143002;143002;Formale Grundlagen der Informatik;SU;143002;Formale Grundlagen der Informatik;SU;143132;Grundlagen der Theoretischen Informatik;SU;143132
+143003;143003;Mediendesign I;SU;143003;Mediendesign I;SU;143133;Mediendesign Grundlagen;SU;143133
+143004;143004;Technische Grundlagen der Informatik;SU;143004;Technische Grundlagen der Informatik;SU;143135;Technische Grundlagen der Informatik;SU;143135
+143005;143005;Programmierung I (Konzepte);SU;143005;Programmierung I (Konzepte);SU;143137;Programmierung I;SU;143137
+143006;143006;Programmierung I (Praxis);Ü;;;;;;;143006
+143007;143007;Mathematik II;SU;143066;Mathematik II;SU;143066;Mathematik II;SU;143066
+143008;143008;Betriebssysteme I;SU;143008;Betriebssysteme;SU;143144;Betriebssysteme;SU;143144
+143009;143009;Datenbanksysteme I;SU;143009;Datenbanksysteme;SU;143009;Datenbanksysteme;SU;143009
+143010;143010;Programmierung II;SU;143010;Programmierung II;SU;143010;Programmierung II;SU;143010
+143011;143011;Mediendesign II;SU;143011;Mediendesign II;SU;143164;Interaktions- und Interface-Design;Ü;143164
+143012;143012;Computergrafik I;SU;143012;Computergrafik I;SU;143147;Computergrafik Grundlagen;SU;143147
+143013;143013;Software-Engineering I;SU;143013;Software-Engineering I;SU;143013;Software Engineering I;SU;143013
+143014;143014;Algorithmen;SU;143014;Algorithmen;SU;143140;Algorithmen und Datenstrukturen;SU;143140
+143015;143015;Multimedia-Engineering I;SU;143015;Multimedia-Engineering I;SU;143153;Web Engineering I;SU;143153
+143016;143016;Multimediatechnik (Video);SU;143016;Multimediatechnik (Video);SU;143169;Medienproduktion und -distribution;Ü;143169
+143017;143017;Multimediatechnik (Audio);SU;143017;Multimediatechnik (Audio);SU;143149;Medientechnologien;Ü;143149
+143018;143018;Verteilte Systeme I;SU;143068;Verteilte Systeme;SU;143151;Verteilte Systeme;SU;143151
+143019;143019;Software-Engineering II;SU;143019;Software-Engineering II;SU;143019;Software-Engineering II;SU;143019
+143020;143020;Human Computer Interaction;SU;143020;Human Computer Interaction;SU;143158;Human Computer Interaction;SU;143158
+143021;143021;IT-Projektmanagement;SU;;;;;;;143021
+143022;143022;Verteilte Systeme II;SU;143070;Fortgeschrittene Programmier- und Architekturkonzepte;SU;143165;Software Engineering: Architekturen und Werkzeuge;Ü;143165
+143023;143023;Multimedia-Engineering II;SU;143023;Multimedia-Engineering II;SU;143156;Web Engineering II;SU;143156
+143024;143024;Qualitätsmanagement;SU;143074;Qualitäts- und Projektmanagement;SU;143167;Softwarequalität und -test;Ü;143167
+143025;143025;Computergrafik II;SU;143025;Computergrafik II;SU;143166;3D Web Graphics;Ü;143166
+143026;143026;Kommunikation, Präsentation;SU;143072;Kommunikation und Präsentation;SU;143105;Grundlagen wissenschaftlichen Arbeitens;SU;143105
+143027;143027;Betriebswirtschaftslehre;SU;143027;Betriebswirtschaftslehre;SU;143168;Betriebswirtschaftslehre;Ü;143168
+143029;143029;Medienprojekt I;SU;143076;Medienprojekt I;SU;143163;Projekt;Ü;143163
+143030;143030;Softwareprojekt I;SU;143080;Softwareprojekt I;SU;143163;Projekt;Ü;143163
+143031;143031;Medienprojekt II;SU;143078;Medienprojekt II;SU;143163;Projekt;Ü;143163
+143032;143032;Softwareprojekt II;SU;143082;Softwareprojekt II;SU;143163;Projekt;Ü;143163
+143033;143033;Ausgewählte Themen aus dem Medienbereich;SU;;;;;;;143033
+143034;143034;Ausgewählte Themen aus dem Softwarebreich;SU;;;;;;;143034
+143035;143035;Mathematik I;Ü;143065;Mathematik I;Ü;143065;Mathematik I;Ü;143065
+143036;143036;Mediendesign I;Ü;143036;Mediendesign I;Ü;143133;Mediendesign Grundlagen;SU;143133
+143037;143037;Technische Grundlagen der Informatik;Ü;143037;Technische Grundlagen der Informatik;Ü;143135;Technische Grundlagen der Informatik;SU;143135
+143038;143038;Mathematik II;Ü;143067;Mathematik II;Ü;143067;Mathematik II;Ü;143067
+143039;143039;Betriebssysteme I;Ü;143039;Betriebssysteme;Ü;143039;Betriebssysteme;Ü;143039
+143040;143040;Datenbanksysteme I;Ü;143040;Datenbanksysteme;Ü;143040;Datenbanksysteme;Ü;143040
+143041;143041;Programmierung II;Ü;143041;Programmierung II;Ü;143041;Programmierung II;Ü;143041
+143042;143042;Mediendesign II;Ü;143042;Mediendesign II;Ü;143164;Interaktions- und Interface-Design;Ü;143164
+143043;143043;Computergrafik I;Ü;143043;Computergrafik I;Ü;143147;Computergrafik Grundlagen;SU;143147
+143044;143044;Software-Engineering I;Ü;143044;Software-Engineering I;Ü;143044;Software-Engineering I;Ü;143044
+143045;143045;Algorithmen;Ü;143045;Algorithmen;Ü;143140;Algorithmen und Datenstrukturen;SU;143140
+143046;143046;Multimedia-Engineering I;Ü;143085;Multimedia-Engineering I;Ü;143156;Web Engineering II;SU;143156
+143047;143047;Multimediatechnik (Video);Ü;143087;Multimediatechnik (Video);Ü;143169;Medienproduktion und -distribution;Ü;143169
+143048;143048;Multimediatechnik (Audio);Ü;143088;Multimediatechnik (Audio);Ü;143149;Medientechnologien;Ü;143149
+143049;143049;Verteilte Systeme I;Ü;143069;Verteilte Systeme;Ü;143069;Verteilte Systeme;Ü;143069
+143050;143050;Software-Engineering II;Ü;143050;Software-Engineering II;Ü;143050;Software-Engineering II;Ü;143050
+143051;143051;Human Computer Interaction;Ü;143051;Human Computer Interaction;Ü;143051;Human Computer Interaction;Ü;143051
+143052;143052;Verteilte Systeme II;Ü;143071;Fortgeschrittene Programmier- und Architekturkonzepte;Ü;143165;Software Engineering: Architekturen und Werkzeuge;Ü;143165
+143053;143053;Multimedia-Engineering II;Ü;143086;Multimedia-Engineering II;Ü;143156;Web Engineering II;SU;143156
+143054;143054;Qualitätsmanagement;Ü;143075;Qualitäts- und Projektmanagement;Ü;143167;Softwarequalität und -test;Ü;143167
+143055;143055;Computergrafik II;Ü;143084;Computergrafik II;Ü;143166;3D Web Graphics;Ü;143166
+143056;143056;Kommunikation, Präsentation;Ü;143073;Kommunikation und Präsentation;Ü;143106;Grundlagen wissenschaftlichen Arbeitens;Ü;143106
+143057;143057;Medienprojekt I;Ü;143077;Medienprojekt I;Ü;143163;Projekt;Ü;143163
+143058;143058;Softwareprojekt I;Ü;143081;Softwareprojekt I;Ü;143163;Projekt;Ü;143163
+143059;143059;Medienprojekt II;Ü;143079;Medienprojekt II;Ü;143163;Projekt;Ü;143163
+143060;143060;Softwareprojekt II;Ü;143083;Softwareprojekt II;Ü;143163;Projekt;Ü;143163
+143061;143061;Ausgewählte Themen aus dem Medienbereich;Ü;;;;;;;143061
+143062;143062;Ausgewählte Themen aus dem Softwarebereich;Ü;;;;;;;143062
+143063;143063;Bericht;Ü;;;;;;;143063
+143064;;;;143064;Mathematik I;SU;143064;Mathematik I;SU;143064
+143065;;;;143065;Mathematik I;Ü;143065;Mathematik I;Ü;143065
+143066;;;;143066;Mathematik II;SU;143066;Mathematik II;SU;143066
+143067;;;;143067;Mathematik II;Ü;143067;Mathematik II;Ü;143067
+143068;;;;143068;Verteilte Systeme;SU;143151;Verteilte Systeme;SU;143151
+143069;;;;143069;Verteilte Systeme;Ü;143069;Verteilte Systeme;Ü;143069
+143070;;;;143070;Fortgeschrittene Programmier- und Architekturkonzepte;SU;143165;Software Engineering: Architekturen und Werkzeuge;Ü;143165
+143071;;;;143071;Fortgeschrittene Programmier- und Architekturkonzepte;Ü;143165;Software Engineering: Architekturen und Werkzeuge;Ü;143165
+143072;;;;143072;Kommunikation und Präsentation;SU;143105;Grundlagen wissenschaftlichen Arbeitens;SU;143105
+143073;;;;143073;Kommunikation und Präsentation;Ü;143106;Grundlagen wissenschaftlichen Arbeitens;Ü;143106
+143074;;;;143074;Qualitäts- und Projektmanagement;SU;143167;Softwarequalität und -test;Ü;143167
+143075;;;;143075;Qualitäts- und Projektmanagement;Ü;143167;Softwarequalität und -test;Ü;143167
+143076;;;;143076;Medienprojekt I;SU;143163;Projekt;Ü;143163
+143077;;;;143077;Medienprojekt I;Ü;143163;Projekt;Ü;143163
+143078;;;;143078;Medienprojekt II;SU;143163;Projekt;Ü;143163
+143079;;;;143079;Medienprojekt II;Ü;143163;Projekt;Ü;143163
+143080;;;;143080;Softwareprojekt I;SU;143163;Projekt;Ü;143163
+143081;;;;143081;Softwareprojekt I;Ü;143163;Projekt;Ü;143163
+143082;;;;143082;Softwareprojekt II;SU;143163;Projekt;Ü;143163
+143083;;;;143083;Softwareprojekt II;Ü;143163;Projekt;Ü;143163
+143084;;;;143084;Computergrafik II;Ü;143166;3D Web Graphics;Ü;143166
+143085;;;;143085;Multimedia-Engineering I;Ü;143153;Web Engineering I;Ü;143153
+143086;;;;143086;Multimedia-Engineering II;Ü;143156;Web Engineering II;Ü;143156
+143087;;;;143087;Multimediatechnik (Video);Ü;143169;Medienproduktion und -distribution;Ü;143169
+143088;;;;143088;Multimediatechnik (Audio);Ü;143149;Medientechnologien;Ü;143149
+143097;;;;;;;;;;143097
+143098;;;;;;;;;;143098
+143099;;;;;;;;;;143099
+143100;;;;;;;;;;143100
+143101;;;;;;;;;;143101
+143102;;;;;;;;;;143102
+143105;;;;143105;Grundlagen wissenschaftlichen Arbeitens;SU;143105;Grundlagen wissenschaftlichen Arbeitens;SU;143105
+143106;;;;143106;Grundlagen wissenschaftlichen Arbeitens;Ü;143106;Grundlagen wissenschaftlichen Arbeitens;Ü;143106
+143107;;;;;;;;;;143107
+143108;;;;;;;;;;143108
+143109;;;;;;;;;;143109
+143110;;;;;;;;;;143110
+143111;;;;;;;;;;143111
+143112;;;;;;;;;;143112
+143113;;;;;;;;;;143113
+143114;;;;;;;;;;143114
+143115;;;;;;;;;;143115
+143116;;;;;;;;;;143116
+143117;;;;;;;;;;143117
+143118;;;;;;;;;;143118
+143119;;;;;;;;;;143119
+143120;;;;;;;;;;143120
+143125;;;;;;;;;;143125
+143126;;;;;;;;;;143126
+143127;;;;;;;;;;143127
+143128;;;;;;;;;;143128
+143129;;;;;;;143129;Effiziente Software entwickeln mit C++;SU;143129
+143130;;;;;;;143130;Effiziente Software entwicklen mit C++;Ü;143130
+143132;;;;;;;143132;Grundlagen der Theoretischen Informatik;SU;143132
+143133;;;;;;;143133;Mediendesign Grundlagen;SU;143133
+143135;;;;;;;143135;Technische Grundlagen der Informatik;SU;143135
+143137;;;;;;;143137;Programmierung I;SU;143137
+143140;;;;;;;143140;Algorithmen und Datenstrukturen;SU;143140
+143144;;;;;;;143144;Betriebssysteme;SU;143144
+143147;;;;;;;143147;Computergrafik Grundlagen;SU;143147
+143149;;;;;;;143149;Medientechnologien;Ü;143149
+143151;;;;;;;143151;Verteilte Systeme;SU;143151
+143153;;;;;;;143153;Web Engineering I;SU;143153
+143156;;;;;;;143156;Web Engineering II;SU;143156
+143158;;;;;;;143158;Human Computer Interaction;SU;143158
+143162;;;;;;;143162;Praxisprojekt;Ü;143162
+143163;;;;;;;143163;Projekt;Ü;143163
+143164;;;;;;;143164;Interaktions- und Interface-Design;Ü;143164
+143165;;;;;;;143165;Software Engineering: Architekturen und Werkzeuge;Ü;143165
+143166;;;;;;;143166;3D Web Graphics;Ü;143166
+143167;;;;;;;143167;Softwarequalität und -test;Ü;143167
+143168;;;;;;;143168;Betriebswirtschaftslehre;Ü;143168
+143169;;;;;;;143169;Medienproduktion und -distribution;Ü;143169
+143170;;;;;;;143170;Effiziente Software entwickeln mit C++;Ü;143170
+143171;;;;;;;143171;Programmiersprachen und -paradigmen;Ü;14371
+143172;;;;;;;143172;Anwendungsentwicklung für iOS-Geräte;Ü;143172
+143173;;;;;;;143173;Mobile Anwendungsentwicklung;Ü;143173
+143174;;;;;;;143174;Visual and Scientific Computing;Ü;143174
+143175;;;;;;;143175;Spieleentwicklung und Creative Coding;Ü;143175
+143176;;;;;;;143176;Signalverarbeitung für Audio, Bild und Video;Ü;143176
+143177;;;;;;;143177;Maschinelles Lernen;Ü;143177
+143178;;;;;;;143178;Aktuelle Webtechnologien: Frameworks und Tools;Ü;143178
+143179;;;;;;;143179;Aktuelle Themen;Ü;143179
+143181;;;;;;;143181;Cloud Computing;Ü;143181

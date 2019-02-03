@@ -1,5 +1,5 @@
-/vendor/*
-/src/php/Config.php
-/temp/smarty/cache/*
-/temp/smarty/templates_c/*
-/data/.DS_Store
+vendor/*
+src/php/Config.php
+temp/smarty/cache/*
+temp/smarty/templates_c/*
+data/.DS_Store

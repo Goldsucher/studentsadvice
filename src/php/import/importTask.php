@@ -1,21 +1,31 @@
 <?php
 
 require_once(__DIR__.'/../setup.inc.php');
-require_once(__DIR__.'/../import/importHelper.php');
+require_once(__DIR__.'/ImportHelper.php');
+require_once('ImportConfig.php');
 
-$importHelper = new ImportHelper($dbConn);
+$importHelper = new ImportHelper($importdbConn);
+$importConfig = new ImportConfig();
 
-foreach($config->getConfigValue('import.files') as $key => $item){
+// New Line: Differentiation between CLI and web browser
+if (php_sapi_name() == "cli") {
+    $phpEOL = PHP_EOL;
+} else {
+    $phpEOL = '<br/>';
+}
 
-    $filePath = $config->getConfigValue('import.files.dir').$item['file'].$config->getConfigValue('import.file.type');
+foreach($importConfig->getConfigValue('import.files') as $key => $item){
+
+    $filePath = $importConfig->getConfigValue('import.files.dir').$item['file'].$importConfig->getConfigValue('import.file.type');
 
     if(file_exists($filePath)) {
-        $import =$importHelper->writeCSVinTableLinewise($filePath, $item['table']);
+        try{
+            $importHelper->writeCSVinTableLinewise($filePath, $item['table'], $importConfig->getConfigValue("import.column.mapping")[$key], $importConfig->getConfigValue("import.file.firstline"));
+            echo 'file: '.$item['file'].$importConfig->getConfigValue('import.file.type').' | table: '.$item['table'].' - import successfull'.$phpEOL;
 
-        if($import){
-            echo 'file: '.$item['file'].' | table: '.$item['table'].' - import successfull\n';
-        } else {
-            echo 'file: '.$item['file'].' | table: '.$item['table'].' - import failed\n';
+        } catch (Exception $e ) {
+            echo 'file: '.$item['file'].$importConfig->getConfigValue('import.file.type').' | table: '.$item['table'].' - import failed'.$phpEOL;
+            continue;
         }
     }
 }
