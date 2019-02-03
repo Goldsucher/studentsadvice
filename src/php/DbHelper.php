@@ -304,7 +304,12 @@ class dbHelper
             $result['status'] = true;
             while ($data = mysqli_fetch_object($rs)) {
                 foreach ($data as $key  => $value) {
-                    $result['content'] = $value;
+                    if($value <= 0) {
+                        $result['content'] = 1;
+                    } else {
+                        $result['content'] = $value;
+                    }
+
                 }
             }
         }
@@ -421,7 +426,7 @@ class dbHelper
                         $notes = array();
                         foreach($unitIdsPerSemester as $unitIdPerSemester) {
                             $tmpIds = join("','", $allGraduates['content']);
-                            $stmt = "SELECT Note FROM noten WHERE Note NOT IN ('m.E','belegt','e.n.b','NT','PR') AND BNF = 5 AND Unit_id = ".$unitIdPerSemester['Unit_id']. " AND Student_id IN ("."'".$tmpIds."'".")";
+                            $stmt = "SELECT Note FROM noten WHERE Note NOT IN ('m.E','belegt','e.n.b','PR') AND BNF = 5 AND Unit_id = ".$unitIdPerSemester['Unit_id']. " AND Student_id IN ("."'".$tmpIds."'".")";
                             $rs = mysqli_query($this->dbConn, $stmt);
 
                             if (!$rs) {
@@ -464,7 +469,7 @@ class dbHelper
                         $notes = array();
                         foreach ($unitIdsPerSemester as $unitIdPerSemester) {
                             $tmpIds = join("','", $allDropOuts['content']);
-                            $stmt = "SELECT Note FROM noten WHERE Note NOT IN ('m.E','belegt','e.n.b','NT','PR') AND BNF = 5 AND Unit_id = " . $unitIdPerSemester['Unit_id'] . " AND Student_id IN (" . "'" . $tmpIds . "'" . ")";
+                            $stmt = "SELECT Note FROM noten WHERE Note NOT IN ('m.E','belegt','e.n.b','PR') AND BNF = 5 AND Unit_id = " . $unitIdPerSemester['Unit_id'] . " AND Student_id IN (" . "'" . $tmpIds . "'" . ")";
                             $rs = mysqli_query($this->dbConn, $stmt);
 
                             if (!$rs) {
@@ -508,7 +513,7 @@ class dbHelper
                         $notes = array();
                         foreach ($unitIdsPerSemester as $unitIdPerSemester) {
                             $tmpIds = join("','", $allStudents);
-                            $stmt = "SELECT Note FROM noten WHERE Note NOT IN ('m.E','belegt','e.n.b','NT','PR') AND BNF = 5 AND Unit_id = " . $unitIdPerSemester['Unit_id'] . " AND Student_id IN (" . "'" . $tmpIds . "'" . ")";
+                            $stmt = "SELECT Note FROM noten WHERE Note NOT IN ('m.E','belegt','e.n.b','PR') AND BNF = 5 AND Unit_id = " . $unitIdPerSemester['Unit_id'] . " AND Student_id IN (" . "'" . $tmpIds . "'" . ")";
                             $rs = mysqli_query($this->dbConn, $stmt);
 
                             if (!$rs) {
@@ -580,7 +585,7 @@ class dbHelper
         $allDropouts = $this->getAllDropOuts();
 
         $result['status'] = true;
-        $coursesByStudent = array();
+       // $coursesByStudent = array();
         $tmp = array();
         foreach($allDropouts['content'] as $dropout){
             $coursesByStudent = $this->getAllCoursesByStudent($dropout);
