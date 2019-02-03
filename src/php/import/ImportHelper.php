@@ -38,7 +38,7 @@ class ImportHelper
                 $result = mysqli_query($this->dbConn, $query);
                 $counter++;
                 if($counter == $maxCounter){
-                    echo $counter. "imports";
+                    echo $counter. "imports". PHP_EOL;
                     $maxCounter += $increment;
                 }
 

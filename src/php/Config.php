@@ -16,8 +16,8 @@ class Config
         // Database configuration
         $this->config['import.mysql.host'] = '127.0.0.1';
         $this->config['import.mysql.name'] = 'uni_students_advice';
-        $this->config['import.mysql.user'] = 'user';
-        $this->config['import.mysql.pass'] = 'user123';
+        $this->config['import.mysql.user'] = 'importeur';
+        $this->config['import.mysql.pass'] = 'Faxe8*Hund';
 
         // paths
         $this->config['path.app'] = __DIR__;
