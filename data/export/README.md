@@ -1,5 +1,5 @@
 ##Basis-Tabellen // CSV-File:
-Das sind die Tabellen, die ihre Daten aus den CSV-Dateien von derBHT haben und uns zur Verfügung gestellt wurden.
+Das sind die Tabellen, die Daten aus den CSV-Dateien von der BHT haben und uns zur Verfügung gestellt wurden.
 
 
 Abschluss // pseudoabschluss.csv
@@ -38,13 +38,14 @@ Unit_id: entspricht der Unit_id aus der units-Tabelle
 
 Wahlplficht: 1 = Wahlplfichtkurs // 0 = kein Wahlpflichtkurs
 
+Plansemester: Welche Kurs ist für welches Semester geplant. 0 = keine Zuordnung, da nicht ersichtlich aus der Äquivalenzliste
+
 Durschnittsnote: Durchschnittsnote von jedem Kurs von allen Studenten, die den Kurs beendet haben.
 
 Durschnittsnote_5: Durchschnittsnote des Kurses von allen Studenten, die den Kurs beendet haben. 
 Mit der Ausnahme, dass die Benotung 5 mit eingerechnet ist
 
 ###zusätzliche Tabellen:
-####
-units_equivalence: entspricht der der Äquivalenz-Liste von Micheal H.
-
+units_equivalence: entspricht der der Äquivalenz-Liste die aus den untschiedlichen Studienordnungen angelegt wurde.
+units_original: entspricht der originalen units.csv der BHT (wurde aber nicht weiterverwendet)
 
