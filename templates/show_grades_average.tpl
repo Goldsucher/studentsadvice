@@ -60,7 +60,7 @@
                     },
                     title: {
                         display: true,
-                        text: 'Durschnittsnote Plansemester {$gradekey}'
+                        text: 'Durchschnittsnote Plansemester {$gradekey}'
                     }
                 }
             });

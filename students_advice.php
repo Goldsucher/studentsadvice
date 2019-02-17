@@ -22,20 +22,15 @@ if(isset($_GET['timeline'])) {
     $smarty->display('show_student_timeline_2.tpl');
 
 }elseif(isset($_GET['line_chart'])) {
-    $student = json_encode($_GET['line_chart']);
+    $student = $_GET['line_chart'];
 
-    $smarty->assign('student', $student);
-    $smarty->display('show_student_linechart.tpl');
-
-}elseif(isset($_POST['line_chart'])) {
-    $student = $_POST['line_chart'];
     $numberOfCourses = array();
-
     $numberOfCourses['numberOfCoursesTaken'] = $dbHelper->getNumberOfTakenCoursesPerSemester($student);
     $numberOfCourses['numberOfPassedCourses'] = $dbHelper->getNumberOfPassedCoursesPerSemester($student);
 
-    echo json_encode($numberOfCourses);
-
+    $smarty->assign('student', $student);
+    $smarty->assign('numberOfCourses', json_encode($numberOfCourses));
+    $smarty->display('show_student_linechart.tpl');
 
 } elseif(isset($_GET['avg_grades'])) {
 
