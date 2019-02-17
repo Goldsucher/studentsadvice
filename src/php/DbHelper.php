@@ -128,10 +128,10 @@ class dbHelper
 
         foreach($activeSemesters as $semester) {
 
-            $stmt = "SELECT COUNT(DISTINCT Unit) as count FROM `noten` WHERE `ID` = ".$student." AND `Semester` = ".$semester;
+            $stmt = "SELECT COUNT(DISTINCT Unit_id) as count FROM `noten` WHERE `Student_id` = ".$student." AND `Semester` = ".$semester." AND `BNF` = 5";
             $rs = mysqli_query($this->dbConn, $stmt);
 
-            $numberOfTakenCourses['semester'][] = [$this->convertSemester($semester)];
+            $numberOfTakenCourses['semester'][] = [$this->convertSemester((int)$semester)];
             $numberOfTakenCourses['numberOfCourses'][]   = mysqli_fetch_object($rs)->count;
         }
 
@@ -146,14 +146,14 @@ class dbHelper
 
         foreach($activeSemesters as $semester) {
 
-            $stmt = "SELECT COUNT(DISTINCT Unit) as count FROM `noten` WHERE `ID` = ".$student." AND `Semester` = ".$semester;
+            $stmt = "SELECT COUNT(DISTINCT Unit_id) as count FROM `noten` WHERE `Student_id` = ".$student." AND `Semester` = ".$semester." AND `BNF` = 5";
             foreach ($criteria as $criterion) {
                 $stmt .= " AND Note != "."'$criterion'";
             }
 
             $rs = mysqli_query($this->dbConn, $stmt);
 
-            $numberOfPassedCourses['semester'][] = [$this->convertSemester($semester)];
+            $numberOfPassedCourses['semester'][] = [$this->convertSemester((int)$semester)];
             $numberOfPassedCourses['numberOfCourses'][]   = mysqli_fetch_object($rs)->count;
         }
 
@@ -178,7 +178,7 @@ class dbHelper
     }
 
     public function getGradeInformations(){
-        $stmt = 'SELECT DISTINCT(Plansemester) FROM `units_extension` WHERE 1 ORDER BY `units_extension`.`Plansemester` ASC';
+        $stmt = 'SELECT DISTINCT(Plansemester) FROM `units_extension` WHERE Plansemester != 0 ORDER BY `units_extension`.`Plansemester` ASC';
         $rs = mysqli_query($this->dbConn, $stmt);
 
         $sems = array();
@@ -579,41 +579,6 @@ class dbHelper
         ksort($result['content']);
 
         return $result;
-    }
-
-    public function getNumberOfFinallyFailedPerCourse(){
-        $allDropouts = $this->getAllDropOuts();
-
-        $result['status'] = true;
-       // $coursesByStudent = array();
-        $tmp = array();
-        foreach($allDropouts['content'] as $dropout){
-            $coursesByStudent = $this->getAllCoursesByStudent($dropout);
-            foreach($coursesByStudent as $course) {
-                $stmt = "SELECT COUNT(Note) FROM noten WHERE noten.Student_id = ". $dropout. " AND Unit_id = " .$course. " AND Note = 5";
-                $rs = mysqli_query($this->dbConn, $stmt);
-
-                if (!$rs) {
-                    $result['status'] = false;
-                    $result['content'] = $this->dbConn->error;
-                    return $result;
-                } else {
-                    while ($data = mysqli_fetch_object($rs)) {
-                        foreach ($data as $value) {
-                            if($value == 3) {
-                                echo "<pre>";
-                                var_dump($course,$dropout);
-                                echo "</pre>";
-                            }
-                            //$tmp[] = $value;
-                        }
-                    }
-                }
-            }
-        }
-        /*echo "<pre>";
-        var_dump($tmp);
-        echo "</pre>";*/
     }
 
     public function getAllCoursesByStudent($student_id) {
